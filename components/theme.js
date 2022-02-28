@@ -1,6 +1,7 @@
 export default {
   colors: {
-    background: '#fff'
+    background: '#fff',
+    lightgray: '#f0f0f0'
   },
   fonts: {
     body: '-apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif',
@@ -10,6 +11,26 @@ export default {
   text: {
     default: {
       fontFamily: 'body'
+    }
+  },
+  forms: {
+    label: {
+      fontSize: 1,
+      fontWeight: 700,
+      pb: 2,
+    },
+    input: {
+      borderColor: 'lightgray',
+      borderRadius: 6,
+      p: 3,
+      transition: 'all 0.1s ease-in-out',
+      '&:focus': {
+        borderColor: 'black',
+        outline: 'none'
+      }
+    },
+    textarea: {
+      variant: 'forms.input'
     }
   },
   buttons: {
@@ -28,7 +49,7 @@ export default {
       fontSize: 4,
       transition: 'all 0.1s ease-in-out',
       '&:hover': {
-        bg: '#f0f0f0'
+        bg: 'lightgray'
       }
     },
     blankOutline: {

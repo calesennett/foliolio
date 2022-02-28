@@ -10,6 +10,7 @@ import {
   Heading
 }           from 'theme-ui'
 import {PlusIcon} from '@radix-ui/react-icons'
+import Link       from 'next/link'
 
 export default function Home() {
   return (
@@ -45,10 +46,15 @@ export default function Home() {
           <Grid
             columns={3}
             gap={3}>
-            <Button
-              variant='outline'>
-              <PlusIcon />
-            </Button>
+            <Link
+              href='/links/new'>
+              <a>
+                <Button
+                  variant='outline'>
+                  <PlusIcon />
+                </Button>
+              </a>
+            </Link>
             <Button
               variant='blankOutline'>
             </Button>
