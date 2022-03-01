@@ -7,9 +7,13 @@ import {
   Box,
   Text,
   Grid,
-  Heading
+  Heading,
+  Themed
 }           from 'theme-ui'
-import {PlusIcon} from '@radix-ui/react-icons'
+import {
+  PlusIcon,
+  MagicWandIcon
+} from '@radix-ui/react-icons'
 import Link       from 'next/link'
 
 export default function Home() {
@@ -21,48 +25,65 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container>
-        <Flex
-          sx={{
-            minHeight: '100vh',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-          as='main'>
-          <Box
-            sx={{
-              textAlign: 'center'
-            }}
-            pb={4}>
-            <Heading
-              pb={2}>
-              Foliolio
-            </Heading>
-            <Text>
-              Add a portfolio item below.
-            </Text>
-          </Box>
-          <Grid
-            columns={3}
-            gap={3}>
-            <Link
-              href='/links/new'>
-              <a>
-                <Button
-                  variant='outline'>
-                  <PlusIcon />
-                </Button>
-              </a>
-            </Link>
+      <Container
+        as='main'>
+        <Box
+          pb={4}>
+          <Heading
+            as='h1'
+            pb={2}>
+            <Flex sx={{alignItems: 'center'}}>
+              Foliolio <MagicWandIcon style={{paddingLeft: 10}} width='auto' height={25} />
+            </Flex>
+          </Heading>
+          <Text>
+            Add a portfolio item below.
+          </Text>
+        </Box>
+        <Grid
+          columns={[1, null, 3]}
+          gap={3}>
+          <Link
+            href='/links/new'>
             <Button
-              variant='blankOutline'>
+              p={4}
+              sx={{
+                position: 'relative'
+              }}
+              variant='outline'>
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)'
+                }}>
+                <PlusIcon height={20} width='auto' />
+              </Box>
             </Button>
-            <Button
-              variant='blankOutline'>
-            </Button>
-          </Grid>
-        </Flex>
+          </Link>
+          <Button
+            variant='blankOutline'>
+          </Button>
+          <Button
+            variant='blankOutline'>
+          </Button>
+
+          <Button
+            variant='blankOutline'>
+          </Button>
+          <Button
+            variant='blankOutline'>
+          </Button>
+        </Grid>
+
+        <Box py={4} sx={{float: 'right'}}>
+          <Link
+            href='/'>
+            <Button mr={2} variant='secondary'>Save</Button>
+          </Link>
+          <Button>Publish</Button>
+        </Box>
       </Container>
     </>
   )

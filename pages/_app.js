@@ -1,4 +1,5 @@
 import '../styles/globals.css'
+import '../styles/fonts.css'
 import {
   ThemeProvider
 }            from 'theme-ui'

@@ -10,7 +10,8 @@ import {
   Heading,
   Input,
   Label,
-  Textarea
+  Textarea,
+  Themed
 }           from 'theme-ui'
 import {PlusIcon} from '@radix-ui/react-icons'
 import Link       from 'next/link'
@@ -24,48 +25,57 @@ export default function NewLinkPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container>
-        <Flex
-          sx={{
-            minHeight: '100vh',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-          as='main'>
-          <Grid
-            gap={3}>
-            <Box
-              p={4}
-              bg='lightgray'
-              sx={{
-                borderRadius: 6
-              }}>
-              <Text sx={{fontSize: 1}}>Add screenshot</Text>
-            </Box>
-            <Box>
-              <Label
-                htmlFor='url'>
-                Website URL
-              </Label>
-              <Input id='url' name='url' placeholder='https://example.com' type='text' />
-            </Box>
-            <Box>
-              <Label
-                htmlFor='title'>
-                Title
-              </Label>
-              <Input id='title' name='title' placeholder='Project title' type='text' />
-            </Box>
-            <Box>
-              <Label
-                htmlFor='description'>
-                Description
-              </Label>
-              <Textarea rows={5} id='description' name='description' placeholder='Project description' type='text' />
-            </Box>
-          </Grid>
-        </Flex>
+      <Container
+        as='main'>
+        <Grid
+          width='100%'
+          gap={3}>
+          <Heading
+            variant='headline'>
+            Project information
+          </Heading>
+          <Flex
+            p={4}
+            bg='transparent'
+            sx={{
+              borderRadius: 6,
+              border: '1px dashed rgba(0,0,0,0.3)',
+              alignItems: 'center',
+              cursor: 'pointer'
+            }}>
+            <PlusIcon />
+            <Text pl={2} sx={{fontSize: 1}}>Add screenshots</Text>
+          </Flex>
+          <Box>
+            <Label
+              htmlFor='url'>
+              Website URL
+            </Label>
+            <Input id='url' name='url' placeholder='https://example.com' type='text' />
+          </Box>
+          <Box>
+            <Label
+              htmlFor='title'>
+              Title
+            </Label>
+            <Input id='title' name='title' placeholder='Project title' type='text' />
+          </Box>
+          <Box>
+            <Label
+              htmlFor='description'>
+              Description
+            </Label>
+            <Textarea rows={5} id='description' name='description' placeholder='Project description' type='text' />
+          </Box>
+        </Grid>
+
+        <Box py={4} sx={{float: 'right'}}>
+          <Link
+            href='/'>
+            <Button mr={2} variant='secondary'>Cancel</Button>
+          </Link>
+          <Button>Save</Button>
+        </Box>
       </Container>
     </>
   )
