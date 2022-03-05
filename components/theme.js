@@ -1,6 +1,8 @@
 export default {
   colors: {
-    background: '#fff',
+    background: '#f1f3ec',
+    primary: '#353031',
+    text: '#353031',
     lightgray: '#f0f0f0'
   },
   fonts: {
@@ -19,6 +21,11 @@ export default {
     headline: {
       variant: 'text.heading',
       fontSize: 5
+    },
+    cardTitle: {
+      variant: 'text.headline',
+      pb: 1,
+      fontSize: 2
     }
   },
   forms: {
@@ -30,12 +37,14 @@ export default {
     },
     input: {
       borderColor: 'lightgray',
+      border: '1px solid transparent',
       borderRadius: 6,
       p: 3,
+      bg: 'white',
       transition: 'all 0.1s ease-in-out',
       fontFamily: 'body',
       '&:focus': {
-        borderColor: 'black',
+        borderColor: 'primary',
         outline: 'none'
       }
     },
@@ -51,34 +60,30 @@ export default {
       borderRadius: 100,
       fontSize: 1,
       py: 1,
-      bg: 'black',
+      bg: 'primary',
       color: 'white',
       cursor: 'pointer'
     },
     secondary: {
       variant: 'buttons.primary',
-      bg: 'lightgray',
-      color: 'black'
+      bg: 'white',
+      color: 'primary'
     },
     outline: {
       variant: 'buttons.primary',
-      bg: 'transparent',
-      color: 'black',
-      border: '1px solid lightgray',
+      bg: 'background',
+      color: 'primary',
+      border: theme => `1px dashed ${theme.colors.primary}`,
       borderRadius: 6,
+      minHeight: 200,
       transition: 'all 0.1s ease-in-out',
       '&:hover': {
-        bg: 'lightgray'
+        bg: 'white'
       },
-      '&:before': {
-        content: '""',
-        pb: '100%',
-        display: 'block'
-      }
     },
     blankOutline: {
       variant: 'buttons.outline',
-      bg: 'transparent',
+      bg: 'white',
       border: '1px dashed lightgray',
       disabled: true,
       cursor: 'auto',
@@ -87,12 +92,23 @@ export default {
       }
     }
   },
+  shadows: {
+    default: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px'
+  },
   sizes: {
-    container: 600
+    container: 768
   },
   layout: {
     container: {
       px: 3
+    }
+  },
+  cards: {
+    primary: {
+      border: '1px solid primary',
+      borderRadius: 6,
+      p: 2,
+      color: 'primary'
     }
   },
   styles: {

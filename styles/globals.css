@@ -14,3 +14,9 @@ a {
 * {
   box-sizing: border-box;
 }
+
+[contenteditable="true"]:active,
+[contenteditable="true"]:focus{
+  border:none;
+  outline:none;
+}

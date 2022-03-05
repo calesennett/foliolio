@@ -8,15 +8,38 @@ import {
   Text,
   Grid,
   Heading,
+  Card,
   Themed
 }           from 'theme-ui'
 import {
   PlusIcon,
-  MagicWandIcon
+  FontRomanIcon
 } from '@radix-ui/react-icons'
+import {useRef}   from 'react'
 import Link       from 'next/link'
+import sampleImage from '../public/images/sample.jpg'
 
-export default function Home() {
+export default function Home({portfolio}) {
+  const headlineRef    = useRef()
+  const subheadlineRef = useRef()
+
+  async function updatePortfolio() {
+    fetch(`/api/portfolio/${portfolio.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        headline: headlineRef.current.textContent,
+        subheadline: subheadlineRef.current.textContent
+      })
+    }).then(res => {
+      console.log('success')
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
   return (
     <>
       <Head>
@@ -32,17 +55,81 @@ export default function Home() {
           <Heading
             as='h1'
             pb={2}>
-            <Flex sx={{alignItems: 'center'}}>
-              Foliolio <MagicWandIcon style={{paddingLeft: 10}} width='auto' height={25} />
-            </Flex>
+            Foli<Text color='transparent' sx={{'-webkit-text-stroke': '1px black'}}>oli</Text>o
           </Heading>
           <Text>
-            Add a portfolio item below.
+            Customize your portfolio headline, subheadline, and items below.
           </Text>
         </Box>
+
+        <Box
+          pb={4}>
+          <Heading
+            as='h1'
+            color='text'
+            pb={2}>
+            <Flex
+              ref={headlineRef}
+              onBlur={() => updatePortfolio()}
+              contentEditable={true}
+              suppressContentEditableWarning={true}
+              sx={{
+                alignItems: 'center',
+                gap: 2
+              }}>
+              <FontRomanIcon />
+              {portfolio.headline}
+            </Flex>
+          </Heading>
+          <Box
+            sx={{
+              maxWidth: '65ch'
+            }}>
+            <Text>
+              <Flex
+                ref={subheadlineRef}
+                onBlur={() => updatePortfolio()}
+                suppressContentEditableWarning={true}
+                contentEditable={true}
+                sx={{
+                  alignItems: 'center',
+                  gap: 2
+                }}>
+                <Box
+                  sx={{
+                    minWidth: 15
+                  }}>
+                  <FontRomanIcon />
+                </Box>
+                {portfolio.subheadline}
+              </Flex>
+            </Text>
+          </Box>
+        </Box>
+
         <Grid
-          columns={[1, null, 3]}
+          columns={[1, null, 2]}
           gap={3}>
+          {portfolio.portfolioItems.map((item, idx) => {
+            return (
+              <Box as='a' href={item.url}>
+                <Box
+                  sx={{
+                    borderRadius: 6,
+                    overflow: 'hidden',
+                    position: 'relative',
+                    height: [300, null, 200],
+                    width: '100%'
+                  }}>
+                  <Image objectFit='cover' objectPosition='top' layout='fill' src={item.thumbnail} />
+                </Box>
+                <Card key={idx} as='a' p={0} href={item.url}>
+                  <Heading mt={2} variant='cardTitle'>{item.title}</Heading>
+                  <Text sx={{fontSize: 1}}>{item.description}</Text>
+                </Card>
+              </Box>
+            )
+          })}
           <Link
             href='/links/new'>
             <Button
@@ -62,29 +149,23 @@ export default function Home() {
               </Box>
             </Button>
           </Link>
-          <Button
-            variant='blankOutline'>
-          </Button>
-          <Button
-            variant='blankOutline'>
-          </Button>
-
-          <Button
-            variant='blankOutline'>
-          </Button>
-          <Button
-            variant='blankOutline'>
-          </Button>
         </Grid>
 
         <Box py={4} sx={{float: 'right'}}>
-          <Link
-            href='/'>
-            <Button mr={2} variant='secondary'>Save</Button>
-          </Link>
           <Button>Publish</Button>
         </Box>
       </Container>
     </>
   )
+}
+
+export async function getServerSideProps() {
+  const res = await fetch(`${process.env.HOSTNAME}/api/portfolio`)
+  const data = await res.json()
+
+  return {
+    props: {
+      portfolio: data
+    }
+  }
 }
