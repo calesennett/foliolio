@@ -1,5 +1,8 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import {useState} from 'react'
+import {useSession, getSession} from 'next-auth/react'
+import prisma from '../lib/prisma'
 import {
   Button,
   Container,
@@ -13,32 +16,16 @@ import {
 }           from 'theme-ui'
 import {
   PlusIcon,
-  FontRomanIcon
+  FontRomanIcon,
+  Pencil1Icon
 } from '@radix-ui/react-icons'
 import {useRef}   from 'react'
 import Link       from 'next/link'
+import Navigation from '../components/Navigation'
 import sampleImage from '../public/images/sample.jpg'
 
-export default function Home({portfolio}) {
-  const headlineRef    = useRef()
-  const subheadlineRef = useRef()
-
-  async function updatePortfolio() {
-    fetch(`/api/portfolio/${portfolio.id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        headline: headlineRef.current.textContent,
-        subheadline: subheadlineRef.current.textContent
-      })
-    }).then(res => {
-      console.log('success')
-    }).catch(err => {
-      console.error(err)
-    })
-  }
+export default function Home({portfolios}) {
+  const { data: session } = useSession()
 
   return (
     <>
@@ -48,124 +35,103 @@ export default function Home({portfolio}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container
-        as='main'>
-        <Box
-          pb={4}>
-          <Heading
-            as='h1'
-            pb={2}>
-            Foli<Text color='transparent' sx={{'-webkit-text-stroke': '1px black'}}>oli</Text>o
-          </Heading>
-          <Text>
-            Customize your portfolio headline, subheadline, and items below.
-          </Text>
-        </Box>
+      <Navigation session={session}/>
 
-        <Box
-          pb={4}>
-          <Heading
-            as='h1'
-            color='text'
-            pb={2}>
-            <Flex
-              ref={headlineRef}
-              onBlur={() => updatePortfolio()}
-              contentEditable={true}
-              suppressContentEditableWarning={true}
-              sx={{
-                alignItems: 'center',
-                gap: 2
-              }}>
-              <FontRomanIcon />
-              {portfolio.headline}
-            </Flex>
-          </Heading>
+      {portfolios.length > 0 ?
+        (
+          <Container
+            as='main'>
+            <Box
+              pb={4}>
+              <Heading pb={3} variant='headline'>Your portfolios</Heading>
+              {portfolios.map(portfolio => {
+                return (
+                  <Card variant='fullWidth' sx={{boxShadow: 'card'}} bg='white' key={portfolio.id}>
+                    <Grid
+                      columns={[1, null, 2]}
+                      sx={{
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                      }}>
+                      <Box>
+                        <Heading variant='cardTitle'>{portfolio.headline}</Heading>
+                        <Text>{portfolio.subheadline}</Text>
+                      </Box>
+                      <Box sx={{justifySelf: [null, null, 'end']}}>
+                        <Link href={`/portfolios/${portfolio.id}/edit`}>
+                          <a>
+                            <Button>
+                              <Flex sx={{gap: 2, alignItems: 'center'}}><Pencil1Icon />Edit</Flex>
+                            </Button>
+                          </a>
+                        </Link>
+                      </Box>
+                    </Grid>
+                  </Card>
+                )
+              })}
+            </Box>
+          </Container>
+        ) : (
+        <Container
+          as='main'>
           <Box
-            sx={{
-              maxWidth: '65ch'
-            }}>
+            pb={4}>
+            <Heading variant='headline'>Your portfolios</Heading>
             <Text>
-              <Flex
-                ref={subheadlineRef}
-                onBlur={() => updatePortfolio()}
-                suppressContentEditableWarning={true}
-                contentEditable={true}
-                sx={{
-                  alignItems: 'center',
-                  gap: 2
-                }}>
-                <Box
-                  sx={{
-                    minWidth: 15
-                  }}>
-                  <FontRomanIcon />
-                </Box>
-                {portfolio.subheadline}
-              </Flex>
+              Create your first portfolio below.
             </Text>
           </Box>
-        </Box>
 
-        <Grid
-          columns={[1, null, 2]}
-          gap={3}>
-          {portfolio.portfolioItems.map((item, idx) => {
-            return (
-              <Box as='a' href={item.url}>
+          <Grid
+            columns={[1, null, 2]}
+            gap={3}>
+            <Link
+              href='/portfolios/new'>
+              <Button
+                p={4}
+                sx={{
+                  position: 'relative'
+                }}
+                variant='outline'>
                 <Box
                   sx={{
-                    borderRadius: 6,
-                    overflow: 'hidden',
-                    position: 'relative',
-                    height: [300, null, 200],
-                    width: '100%'
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)'
                   }}>
-                  <Image objectFit='cover' objectPosition='top' layout='fill' src={item.thumbnail} />
+                  <PlusIcon height={20} width='auto' />
                 </Box>
-                <Card key={idx} as='a' p={0} href={item.url}>
-                  <Heading mt={2} variant='cardTitle'>{item.title}</Heading>
-                  <Text sx={{fontSize: 1}}>{item.description}</Text>
-                </Card>
-              </Box>
-            )
-          })}
-          <Link
-            href='/links/new'>
-            <Button
-              p={4}
-              sx={{
-                position: 'relative'
-              }}
-              variant='outline'>
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)'
-                }}>
-                <PlusIcon height={20} width='auto' />
-              </Box>
-            </Button>
-          </Link>
-        </Grid>
+              </Button>
+            </Link>
+          </Grid>
 
-        <Box py={4} sx={{float: 'right'}}>
-          <Button>Publish</Button>
-        </Box>
-      </Container>
+          <Box py={4} sx={{float: 'right'}}>
+            <Button>Publish</Button>
+          </Box>
+        </Container>
+      )}
     </>
   )
 }
 
-export async function getServerSideProps() {
-  const res = await fetch(`${process.env.HOSTNAME}/api/portfolio`)
-  const data = await res.json()
+export async function getServerSideProps(ctx) {
+  const session    = await getSession(ctx)
+  var portfolios   = []
+
+  if (session) {
+    portfolios = await prisma.portfolio.findMany({
+      where: {
+        userId: session.user.id
+      }
+    })
+  }
 
   return {
     props: {
-      portfolio: data
+      session: session,
+      portfolios: portfolios
     }
   }
 }

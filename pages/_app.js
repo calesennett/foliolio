@@ -3,13 +3,19 @@ import '../styles/fonts.css'
 import {
   ThemeProvider
 }            from 'theme-ui'
+import {SessionProvider} from 'next-auth/react'
 import theme from '../components/theme'
 
-function MyApp({ Component, pageProps }) {
+function MyApp({
+  Component,
+  pageProps: {session, ...pageProps}
+}) {
   return (
-    <ThemeProvider theme={theme}>
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <SessionProvider session={session}>
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </SessionProvider>
   )
 }
 

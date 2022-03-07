@@ -20,6 +20,7 @@ export default {
     },
     headline: {
       variant: 'text.heading',
+      pb: 2,
       fontSize: 5
     },
     cardTitle: {
@@ -109,20 +110,27 @@ export default {
       borderRadius: 6,
       p: 2,
       color: 'primary'
+    },
+    fullWidth: {
+      variant: 'cards.primary',
+      p: 3
     }
   },
   styles: {
     root: {
       main: {
-        pt: [3, null, 5]
+        pt: 3
       },
     },
     h1: {
-      mb: 2
+      m: 0,
+      pb: 2
     },
     h2: {
-      mb: 2,
+      m: 0,
+      pb: 2,
       fontSize: 5,
+      fontWeight: 500,
       fontFamily: 'heading'
     }
   }

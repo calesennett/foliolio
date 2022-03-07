@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Router from 'next/router'
 import {useState} from 'react'
+import {useSession, getSession} from 'next-auth/react'
 import {
   Button,
   Container,
@@ -20,6 +21,7 @@ import Link       from 'next/link'
 import React, {useCallback} from 'react'
 import SquareLoader from 'react-spinners/SquareLoader'
 import urlExist from 'url-exist'
+import Navigation from '../../components/Navigation'
 import {useDropzone} from 'react-dropzone'
 
 export default function NewLinkPage() {
@@ -27,28 +29,31 @@ export default function NewLinkPage() {
   const [description, setDescription] = useState()
   const [url, setUrl] = useState()
   const [screenshot, setScreenshot] = useState()
-  const [loading, setLoading] = useState(false)
+  const [screenshotLoading, setScreenshotLoading] = useState(false)
+  const [saving, setSaving] = useState(false)
 
   const captureScreenshot = async (url) => {
-    setLoading(true)
-    fetch('/api/screenshot', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        url: url
+    if (url) {
+      setScreenshotLoading(true)
+      fetch('/api/screenshot', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          url: url
+        })
+      }).then(async (res) => {
+        const data = await res.json()
+        const screenshot = `data:image/jpeg;base64,${data.screenshot}`
+
+        if (screenshot) {
+          setScreenshot(screenshot)
+        }
+
+        setScreenshotLoading(false)
       })
-    }).then(async (res) => {
-      const data = await res.json()
-      const screenshot = `data:image/jpeg;base64,${data.screenshot}`
-
-      if (screenshot) {
-        setScreenshot(screenshot)
-      }
-
-      setLoading(false)
-    })
+    }
   }
 
   const onDrop = useCallback((acceptedFiles) => {
@@ -68,6 +73,7 @@ export default function NewLinkPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setSaving(true)
     try {
       await fetch('/api/portfolio/cl0bhoe900019avnyyyv8agb2/portfolio-items', {
         method: 'POST',
@@ -82,11 +88,15 @@ export default function NewLinkPage() {
         })
       })
 
+      setSaving(false)
       await Router.push('/')
     } catch (err) {
+      setSaving(false)
       console.error(err)
     }
   }
+
+  const {data: session} = useSession()
 
   return (
     <>
@@ -96,6 +106,7 @@ export default function NewLinkPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <Navigation session={session} />
       <Container
         as='main'>
         <form
@@ -126,7 +137,7 @@ export default function NewLinkPage() {
               </Flex>
             }
 
-            <SquareLoader size={15} loading={loading} />
+            <SquareLoader size={15} loading={screenshotLoading} />
 
             <Grid
               gap={3}
@@ -163,10 +174,18 @@ export default function NewLinkPage() {
               href='/'>
               <Button mr={2} variant='secondary'>Cancel</Button>
             </Link>
-            <Button type='submit'>Save</Button>
+            <Button type='submit'>{saving ? "Saving..." : "Save"}</Button>
           </Box>
         </form>
       </Container>
     </>
   )
+}
+
+export async function getServerSideProps(ctx) {
+  return {
+    props: {
+      session: await getSession(ctx)
+    }
+  }
 }

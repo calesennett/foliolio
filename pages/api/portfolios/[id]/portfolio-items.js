@@ -4,7 +4,7 @@ import cloudinary from 'cloudinary'
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: '5mb' // Set desired value here
+      sizeLimit: '5mb'
     }
   }
 }
