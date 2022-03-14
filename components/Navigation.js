@@ -9,7 +9,7 @@ import {
   Heading
 } from 'theme-ui'
 
-export default function Navigation({session}) {
+export default function Navigation({session, bg, portfolio}) {
   return (
     <Container>
       <Flex
@@ -27,11 +27,15 @@ export default function Navigation({session}) {
             </Heading>
           </a>
         </Link>
-        {session ? (
-          <Button onClick={() => signOut()}>Sign out</Button>
-        ) : (
-          <Button onClick={() => signIn()}>Sign in</Button>
-        )}
+        {!portfolio &&
+          <>
+            {session ? (
+              <Button onClick={() => signOut()}>Sign out</Button>
+            ) : (
+              <Button onClick={() => signIn()}>Sign in</Button>
+            )}
+          </>
+        }
       </Flex>
     </Container>
   )

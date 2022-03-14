@@ -1,3 +1,6 @@
+/** @jsxImportSource theme-ui */
+
+import prisma       from '../../../../lib/prisma'
 import Head from 'next/head'
 import Router from 'next/router'
 import {useState} from 'react'
@@ -20,11 +23,14 @@ import {PlusIcon} from '@radix-ui/react-icons'
 import Link       from 'next/link'
 import React, {useCallback} from 'react'
 import SquareLoader from 'react-spinners/SquareLoader'
+import {
+  Cross2Icon
+} from '@radix-ui/react-icons'
 import urlExist from 'url-exist'
-import Navigation from '../../components/Navigation'
+import Navigation from '../../../../components/Navigation'
 import {useDropzone} from 'react-dropzone'
 
-export default function NewLinkPage() {
+export default function NewPortfolioItem({portfolio}) {
   const [title, setTitle] = useState()
   const [description, setDescription] = useState()
   const [url, setUrl] = useState()
@@ -34,7 +40,7 @@ export default function NewLinkPage() {
   const [saving, setSaving] = useState(false)
 
   const captureScreenshot = async (url) => {
-    if (url && !url.includes("figma.com")) {
+    if (url && !url.includes("figma.com") && !screenshot) {
       setScreenshotLoading(true)
       fetch('/api/screenshot', {
         method: 'POST',
@@ -76,7 +82,7 @@ export default function NewLinkPage() {
     e.preventDefault()
     setSaving(true)
     try {
-      await fetch('/api/portfolio/cl0bhoe900019avnyyyv8agb2/portfolio-items', {
+      await fetch(`/api/portfolios/${portfolio.id}/portfolio-items`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -90,7 +96,7 @@ export default function NewLinkPage() {
       })
 
       setSaving(false)
-      await Router.push('/')
+      await Router.push(`/portfolios/${portfolio.id}/edit`)
     } catch (err) {
       setSaving(false)
       console.error(err)
@@ -102,7 +108,7 @@ export default function NewLinkPage() {
   return (
     <>
       <Head>
-        <title>Foliolio</title>
+        <title>Add a project | Foliolio</title>
         <meta name="description" content="quick portfolio" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -132,8 +138,8 @@ export default function NewLinkPage() {
                 }}>
                 <PlusIcon />
                 { isDragActive ?
-                  <Text pl={2} sx={{fontSize: 1}}>Drop screenshots</Text> :
-                  <Text pl={2} sx={{fontSize: 1}}>Add screenshots</Text>
+                  <Text pl={2} sx={{fontSize: 1}}>Drop thumbnail</Text> :
+                  <Text pl={2} sx={{fontSize: 1}}>Add thumbnail</Text>
                 }
               </Flex>
             }
@@ -155,9 +161,30 @@ export default function NewLinkPage() {
 
             <Grid
               gap={3}
-              columns={2}>
+              columns={[1, null, 2]}>
               {screenshot &&
-                <Image src={screenshot} sx={{borderRadius: 6, maxWidth: '100%'}} />
+                <Box
+                  sx={{
+                    position: 'relative'
+                  }}>
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: 0,
+                      right: 0,
+                      bg: 'primary',
+                      borderRadius: '0 6px 0 0'
+                    }}>
+                    <Button
+                      sx={{
+                        p: 2
+                      }}
+                      onClick={() => setScreenshot()}>
+                      <Cross2Icon />
+                    </Button>
+                  </Box>
+                  <Image src={screenshot} sx={{borderRadius: 6, maxWidth: '100%'}} />
+                </Box>
               }
             </Grid>
             <Box>
@@ -185,7 +212,7 @@ export default function NewLinkPage() {
 
           <Box py={4} sx={{float: 'right'}}>
             <Link
-              href='/'>
+              href={`/portfolios/${portfolio.id}/edit`}>
               <Button mr={2} variant='secondary'>Cancel</Button>
             </Link>
             <Button type='submit'>{saving ? "Saving..." : "Save"}</Button>
@@ -197,9 +224,32 @@ export default function NewLinkPage() {
 }
 
 export async function getServerSideProps(ctx) {
-  return {
-    props: {
-      session: await getSession(ctx)
+  const session = await getSession(ctx)
+  const {id}    = ctx.query
+
+  if (session) {
+    const portfolio = await prisma.portfolio.findFirst({
+      where: {
+        id: id,
+        user: {
+          is: {
+            email: session.user.email
+          }
+        }
+      }
+    })
+
+    return {
+      props: {
+        portfolio: portfolio
+      }
+    }
+  } else {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
     }
   }
 }

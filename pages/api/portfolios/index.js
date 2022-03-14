@@ -4,8 +4,7 @@ import {getSession} from 'next-auth/react'
 export default async function handler(req, res) {
   const {method} = req
   const session = await getSession({req})
-
-  console.log(session)
+  const {headline, subheadline} = req.body
 
   var result
 
@@ -23,9 +22,25 @@ export default async function handler(req, res) {
         } else {
           res.json({success: false, error: 'No portfolio found'})
         }
-        break
       } else {
-        res.status(422).json({message: 'unauthorized'})
+        res.status(401).json({message: 'unauthorized'})
+      }
+      break
+    case 'POST':
+      if (session) {
+        const createPortfolio = await prisma.portfolio.create({
+          data: {
+            headline: headline,
+            subheadline: subheadline,
+            user: {
+              connect: {
+                email: session.user.email
+              }
+            }
+          }
+        })
+
+        res.json(createPortfolio)
       }
     default:
       res.status(405).end(`Method ${method} not allowed`)

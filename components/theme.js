@@ -3,7 +3,8 @@ export default {
     background: '#f1f3ec',
     primary: '#353031',
     text: '#353031',
-    lightgray: '#f0f0f0'
+    lightgray: '#f0f0f0',
+    gray: '#bebdbd'
   },
   fonts: {
     body: '"Inter var", "Inter", -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif',
@@ -108,7 +109,7 @@ export default {
     primary: {
       border: '1px solid primary',
       borderRadius: 6,
-      p: 2,
+      bg: 'white',
       color: 'primary'
     },
     fullWidth: {
