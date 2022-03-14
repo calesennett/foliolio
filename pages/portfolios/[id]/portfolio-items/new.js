@@ -172,15 +172,17 @@ export default function NewPortfolioItem({portfolio}) {
                       position: 'absolute',
                       top: 0,
                       right: 0,
+                      mr: 1,
+                      mt: 1,
                       bg: 'primary',
-                      borderRadius: '0 6px 0 0'
+                      borderRadius: 6
                     }}>
                     <Button
                       sx={{
                         p: 2
                       }}
                       onClick={() => setScreenshot()}>
-                      <Cross2Icon />
+                      <Flex sx={{alignItems: 'center'}}><Cross2Icon /></Flex>
                     </Button>
                   </Box>
                   <Image src={screenshot} sx={{borderRadius: 6, maxWidth: '100%'}} />
