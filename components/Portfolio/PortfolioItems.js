@@ -25,7 +25,20 @@ export default function PortfolioItems({items}) {
                     height: 200,
                     width: '100%'
                   }}>
-                  <Image objectFit='cover' objectPosition='top' layout='fill' src={item.thumbnail} />
+                  {(item.thumbnail && !item.url.includes('figma.com')) ? (
+                    <Image objectFit='cover' objectPosition='top' layout='fill' src={item.thumbnail} />
+                  ) : (
+                    <iframe
+                      height={250}
+                      width='100%'
+                      style={{
+                        border: 0,
+                        borderRadius: 6
+                      }}
+                      src={`https://www.figma.com/embed?embed_host=foliolio&url=${item.url}`}
+                      allowFullScreen
+                    />
+                  )}
                 </Box>
                 <Box p={3}>
                   <Heading variant='cardTitle'>{item.title}</Heading>

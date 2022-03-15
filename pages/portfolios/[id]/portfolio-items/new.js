@@ -136,10 +136,11 @@ export default function NewPortfolioItem({portfolio}) {
                   alignItems: 'center',
                   cursor: 'pointer'
                 }}>
+                <Input {...getInputProps()} />
                 <PlusIcon />
                 { isDragActive ?
                   <Text pl={2} sx={{fontSize: 1}}>Drop thumbnail</Text> :
-                  <Text pl={2} sx={{fontSize: 1}}>Add thumbnail</Text>
+                  <Text pl={2} sx={{fontSize: 1}}>Add thumbnail <span sx={{fontWeight: 'bold'}}>or</span> enter a URL to have one generated</Text>
                 }
               </Flex>
             }

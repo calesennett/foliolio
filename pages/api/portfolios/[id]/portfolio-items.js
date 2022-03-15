@@ -20,13 +20,15 @@ export default async function handler(req, res) {
   } = req.body
 
   let thumbnailURL
-  await cloudinary.v2.uploader.upload(thumbnail, {}, function(err, res) {
-    if (!err) {
-      thumbnailURL = res.secure_url
-    } else {
-      console.log(err)
-    }
-  })
+  if (!url.includes('figma.com')) {
+    await cloudinary.v2.uploader.upload(thumbnail, {}, function(err, res) {
+      if (!err) {
+        thumbnailURL = res.secure_url
+      } else {
+        console.log(err)
+      }
+    })
+  }
 
   switch (method) {
     case 'POST':
@@ -35,7 +37,7 @@ export default async function handler(req, res) {
           title:       title,
           description: description,
           url:         url,
-          thumbnail:   thumbnailURL,
+          thumbnail:   thumbnailURL || "",
           portfolio: {
             connect: {
               id: id
