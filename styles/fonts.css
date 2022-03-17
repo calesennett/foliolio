@@ -1,1 +1,15 @@
-@import url('https://rsms.me/inter/inter.css')
+@font-face {
+  font-family: "Sohne";
+  src: url("/fonts/Sohne-Buch.woff2") format("woff2"),
+       url("/fonts/Sohne-Buch.woff") format("woff");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Sohne";
+  src: url("/fonts/Sohne-Kraftig.woff2") format("woff2"),
+       url("/fonts/Sohne-Kraftig.woff") format("woff");
+  font-style: normal;
+  font-weight: 500;
+}

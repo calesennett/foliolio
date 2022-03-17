@@ -7,8 +7,8 @@ export default {
     gray: '#bebdbd'
   },
   fonts: {
-    body: '"Inter var", "Inter", -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif',
-    heading: '"Inter var", "Inter", -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif',
+    body: '"Sohne", -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif',
+    heading: '"Sohne", -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif',
     monospace: 'Menlo, monospace',
   },
   text: {
@@ -21,6 +21,7 @@ export default {
     },
     headline: {
       variant: 'text.heading',
+      lineHeight: 'heading',
       pb: 2,
       fontSize: 5
     },
@@ -29,6 +30,9 @@ export default {
       pb: 1,
       fontSize: 2
     }
+  },
+  lineHeights: {
+    heading: '1.25'
   },
   forms: {
     label: {

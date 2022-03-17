@@ -46,6 +46,15 @@ export default async function handler(req, res) {
         }
       })
 
+      const updatePortfolioUpdatedAt = await prisma.portfolio.update({
+        where: {
+          id: id
+        },
+        data: {
+          updatedAt: new Date()
+        }
+      })
+
       res.json({success: true})
       break
     default:

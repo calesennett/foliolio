@@ -8,6 +8,9 @@ import {
   Box,
   Heading
 } from 'theme-ui'
+import {
+  DashboardIcon
+} from '@radix-ui/react-icons'
 
 export default function Navigation({session, bg, portfolio}) {
   return (
@@ -20,11 +23,17 @@ export default function Navigation({session, bg, portfolio}) {
         }}>
         <Link href="/">
           <a>
-            <Heading
-              as='h2'
-              pb={2}>
-              Foli<Text color='transparent' sx={{'-webkit-text-stroke': '1px black'}}>oli</Text>o
-            </Heading>
+            <Flex
+              sx={{
+                alignItems: 'center',
+                gap: 2
+              }}>
+              <DashboardIcon width={20} height='auto' />
+              <Heading
+                as='h2'>
+                Foli<Text color='transparent' sx={{'-webkit-text-stroke': '1px black'}}>oli</Text>o
+              </Heading>
+            </Flex>
           </a>
         </Link>
         {!portfolio &&

@@ -113,25 +113,18 @@ export default function EditPortfolio({portfolio}) {
               sx={{
                 maxWidth: '65ch'
               }}>
-              <Text>
-                <Flex
-                  ref={subheadlineRef}
-                  onBlur={() => updatePortfolio()}
-                  suppressContentEditableWarning={true}
-                  contentEditable={true}
-                  sx={{
-                    alignItems: 'center',
-                    gap: 2
-                  }}>
-                  <Box
-                    sx={{
-                      minWidth: 15
-                    }}>
-                    <FontRomanIcon />
-                  </Box>
-                  {portfolio.subheadline}
-                </Flex>
-              </Text>
+              <Flex
+                ref={subheadlineRef}
+                onBlur={() => updatePortfolio()}
+                suppressContentEditableWarning={true}
+                contentEditable={true}
+                sx={{
+                  alignItems: 'center',
+                  gap: 2
+                }}>
+                <FontRomanIcon />
+                <Text>{portfolio.subheadline}</Text>
+              </Flex>
             </Box>
             <Box pt={4}>
               <Link

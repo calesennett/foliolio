@@ -167,10 +167,6 @@ export default function Home({portfolios}) {
                   </Button>
                 </Link>
               </Grid>
-
-              <Box py={4} sx={{float: 'right'}}>
-                <Button>Publish</Button>
-              </Box>
             </Container>
           )}
         </>
@@ -179,7 +175,7 @@ export default function Home({portfolios}) {
           as='main'>
           <Box
             pb={4}>
-            <Heading variant='headline'>The fastest way show off.</Heading>
+            <Heading sx={{fontSize: 6}} variant='headline'>The fastest way to show off.</Heading>
             <Text>
               Sign in to create your first portfolio.
             </Text>
@@ -203,7 +199,8 @@ export async function getServerSideProps(ctx) {
             email: session.user.email
           }
         }
-      }
+      },
+      orderBy: [{updatedAt: 'desc'}]
     })
   }
 

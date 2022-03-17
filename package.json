@@ -11,9 +11,10 @@
   "dependencies": {
     "@mdx-js/react": "^1.6.22",
     "@next-auth/prisma-adapter": "^1.0.1",
-    "@prisma/client": "^3.10.0",
+    "@prisma/client": "^3.11.0",
     "@radix-ui/react-icons": "^1.1.0",
     "@radix-ui/react-switch": "^0.1.5",
+    "babel-plugin-superjson-next": "^0.4.3",
     "capture-website": "^2.3.0",
     "cloudinary": "^1.28.1",
     "next": "12.1.0",
@@ -32,6 +33,6 @@
   "devDependencies": {
     "eslint": "8.10.0",
     "eslint-config-next": "12.1.0",
-    "prisma": "^3.10.0"
+    "prisma": "^3.11.0"
   }
 }
