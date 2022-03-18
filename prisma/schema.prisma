@@ -26,6 +26,8 @@ model Portfolio {
   headline       String
   subheadline    String
   published      Boolean         @default(false)
+  protected      Boolean         @default(false)
+  password       String?
   portfolioItems PortfolioItem[]
   user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId         String
