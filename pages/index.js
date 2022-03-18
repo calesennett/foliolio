@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Router from 'next/router'
 import Image from 'next/image'
 import {useState} from 'react'
 import {useSession, getSession} from 'next-auth/react'
@@ -14,10 +15,12 @@ import {
   Card,
   Themed
 }           from 'theme-ui'
+import {toast} from 'react-toastify'
 import {
   PlusIcon,
   FontRomanIcon,
-  Pencil1Icon
+  Pencil1Icon,
+  TrashIcon
 } from '@radix-ui/react-icons'
 import {useRef}   from 'react'
 import Link       from 'next/link'
@@ -28,6 +31,19 @@ export default function Home({portfolios}) {
   const { data: session } = useSession()
   const publishedPortfolios = portfolios.filter(portfolio => portfolio.published)
   const draftPortfolios     = portfolios.filter(portfolio => !portfolio.published)
+
+  async function deletePortfolio(id) {
+    try {
+      const res = await fetch(`/api/portfolios/${id}`, {
+        method: 'DELETE'
+      })
+
+      Router.push('/')
+      toast.success('Successfully deleted portfolio.')
+    } catch (err) {
+      toast.error('Failed to delete portfolio. Please try again.')
+    }
+  }
 
   return (
     <>
@@ -78,7 +94,7 @@ export default function Home({portfolios}) {
                                   <Heading variant='cardTitle'>{portfolio.headline}</Heading>
                                   <Text>{portfolio.subheadline}</Text>
                                 </Box>
-                                <Box sx={{justifySelf: [null, null, 'end']}}>
+                                <Flex sx={{gap: 2, justifySelf: [null, null, 'end']}}>
                                   <Link href={`/portfolios/${portfolio.id}/edit`}>
                                     <a>
                                       <Button>
@@ -86,7 +102,12 @@ export default function Home({portfolios}) {
                                       </Button>
                                     </a>
                                   </Link>
-                                </Box>
+                                  <Button
+                                    variant='pillOutline'
+                                    onClick={() => deletePortfolio(portfolio.id)}>
+                                    <Flex sx={{gap: 2, alignItems: 'center'}}><TrashIcon />Delete</Flex>
+                                  </Button>
+                                </Flex>
                               </Grid>
                             </Card>
                           )
@@ -103,28 +124,39 @@ export default function Home({portfolios}) {
                       gap={2}>
                       {draftPortfolios.map(portfolio => {
                         return (
-                          <Card variant='fullWidth' sx={{boxShadow: 'card'}} bg='white' key={portfolio.id}>
-                            <Grid
-                              columns={[1, null, 2]}
-                              sx={{
-                                justifyContent: 'space-between',
-                                alignItems: 'center'
-                              }}>
-                              <Box>
-                                <Heading variant='cardTitle'>{portfolio.headline}</Heading>
-                                <Text>{portfolio.subheadline}</Text>
-                              </Box>
-                              <Box sx={{justifySelf: [null, null, 'end']}}>
-                                <Link href={`/portfolios/${portfolio.id}/edit`}>
-                                  <a>
-                                    <Button>
-                                      <Flex sx={{gap: 2, alignItems: 'center'}}><Pencil1Icon />Edit</Flex>
-                                    </Button>
-                                  </a>
-                                </Link>
-                              </Box>
-                            </Grid>
-                          </Card>
+                          <>
+                            <Card variant='fullWidth' sx={{boxShadow: 'card'}} bg='white' key={portfolio.id}>
+                              <Grid
+                                columns={[1, null, '2fr 1fr']}
+                                sx={{
+                                  justifyContent: 'space-between',
+                                  alignItems: 'center'
+                                }}>
+                                <Box>
+                                  <Heading variant='cardTitle'>{portfolio.headline}</Heading>
+                                  <Text>{portfolio.subheadline}</Text>
+                                </Box>
+                                <Flex sx={{gap: 2, justifySelf: 'end'}}>
+                                  <Link href={`/portfolios/${portfolio.id}/edit`}>
+                                    <a>
+                                      <Button>
+                                        <Flex sx={{gap: 2, alignItems: 'center'}}><Pencil1Icon />Edit</Flex>
+                                      </Button>
+                                    </a>
+                                  </Link>
+                                  <Button
+                                    variant='transparent'
+                                    sx={{
+                                      justifySelf: 'end',
+                                    }}
+                                    onClick={() => deletePortfolio(portfolio.id)}>
+                                    <Flex sx={{gap: 2, alignItems: 'center'}}><TrashIcon title='Delete icon' /></Flex>
+                                  </Button>
+                                </Flex>
+                              </Grid>
+                            </Card>
+
+                          </>
                         )
                       })}
                     </Grid>

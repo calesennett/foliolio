@@ -7,13 +7,14 @@ export default {
     gray: '#bebdbd'
   },
   fonts: {
-    body: '"Sohne", -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif',
-    heading: '"Sohne", -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif',
+    body: '-apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif',
+    heading: '-apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif',
     monospace: 'Menlo, monospace',
   },
   text: {
     default: {
-      fontFamily: 'body'
+      fontFamily: 'body',
+      lineHeight: 'body'
     },
     heading: {
       fontFamily: 'heading',
@@ -32,7 +33,8 @@ export default {
     }
   },
   lineHeights: {
-    heading: '1.25'
+    heading: '1.25',
+    body: '1.5'
   },
   forms: {
     label: {
@@ -69,6 +71,17 @@ export default {
       bg: 'primary',
       color: 'white',
       cursor: 'pointer'
+    },
+    transparent: {
+      variant: 'buttons.pillOutline',
+      border: 0,
+      p: 0
+    },
+    pillOutline: {
+      variant: 'buttons.primary',
+      bg: 'transparent',
+      color: 'primary',
+      border: theme => `1px solid ${theme.colors.primary}`
     },
     secondary: {
       variant: 'buttons.primary',

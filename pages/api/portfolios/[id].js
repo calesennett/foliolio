@@ -35,7 +35,25 @@ export default async function handler(req, res) {
           }
         })
 
-        res.json(updateUserPortfolio)
+        res.redirect('/')
+      }
+      break
+    case 'DELETE':
+      if (session) {
+        const deleteUserPortfolio = await prisma.user.update({
+          where: {
+            email: session.user.email
+          },
+          data: {
+            portfolios: {
+              delete: {
+                id: id
+              }
+            }
+          }
+        })
+
+        res.json(deleteUserPortfolio)
       }
       break
     default:
