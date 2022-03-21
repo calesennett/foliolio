@@ -21,10 +21,12 @@ export default function PortfolioPage({portfolio}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navigation portfolio session={session}/>
+      {session &&
+        <Navigation portfolio session={session}/>
+      }
 
       <Container
-        pb={4}
+        py={4}
         as='main'>
         <Box
           pb={4}>

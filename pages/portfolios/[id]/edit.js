@@ -87,9 +87,23 @@ export default function EditPortfolio({portfolio}) {
         as='main'>
         <Flex
           sx={{
-            justifyContent: 'space-between',
-            alignItems: 'start'
+            alignItems: 'start',
+            gap: 4
           }}>
+          <Button
+            sx={{
+              width: 100,
+              height: 100,
+              borderRadius: 9999,
+              bg: 'transparent',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'primary',
+              border: theme => `1px dashed ${theme.colors.primary}`
+            }}>
+            <PlusIcon />
+          </Button>
           <Box
             pb={4}>
             <Heading
@@ -146,6 +160,7 @@ export default function EditPortfolio({portfolio}) {
           <Flex
             sx={{
               alignItems: 'center',
+              ml: 'auto',
               gap: 1
             }}>
             <Label

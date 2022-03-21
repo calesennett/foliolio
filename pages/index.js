@@ -103,9 +103,12 @@ export default function Home({portfolios}) {
                                     </a>
                                   </Link>
                                   <Button
-                                    variant='pillOutline'
+                                    variant='transparent'
+                                    sx={{
+                                      justifySelf: 'end',
+                                    }}
                                     onClick={() => deletePortfolio(portfolio.id)}>
-                                    <Flex sx={{gap: 2, alignItems: 'center'}}><TrashIcon />Delete</Flex>
+                                    <Flex sx={{gap: 2, alignItems: 'center'}}><TrashIcon title='Delete icon' /></Flex>
                                   </Button>
                                 </Flex>
                               </Grid>
@@ -194,7 +197,7 @@ export default function Home({portfolios}) {
                         left: '50%',
                         transform: 'translate(-50%, -50%)'
                       }}>
-                      <PlusIcon height={20} width='auto' />
+                      <PlusIcon height={20} width={20} />
                     </Box>
                   </Button>
                 </Link>
