@@ -28,6 +28,7 @@ model Portfolio {
   published      Boolean         @default(false)
   protected      Boolean         @default(false)
   password       String?
+  thumbnail      String?
   portfolioItems PortfolioItem[]
   user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId         String

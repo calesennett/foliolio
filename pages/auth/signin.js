@@ -75,7 +75,18 @@ export default function SignInPage({providers, csrfToken}) {
               gap={2}>
               {Object.values(providers).map((provider) => (
                 <Box key={provider.name}>
-                  {provider.name === "Email" ? (
+                  {provider.name === "Twitter" ? (
+                    <Flex sx={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+                      <Button py={2} sx={{width: '100%'}} bg={colors[provider.name]} onClick={() => signIn(provider.id)}>
+                        <Flex sx={{justifyContent: 'center', alignItems: 'center', gap: 2}}>
+                          {icons[provider.name]}
+                          Sign in with {provider.name}
+                        </Flex>
+                      </Button>
+
+                      <Text py={3}>or</Text>
+                    </Flex>
+                  ) : (
                     <Flex sx={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
                       <form style={{width: '100%'}} method="post" action="/api/auth/signin/email">
                         <Input name="csrfToken" type="hidden" defaultValue={csrfToken} />
@@ -91,15 +102,7 @@ export default function SignInPage({providers, csrfToken}) {
                           </Flex>
                         </Button>
                       </form>
-                      <Text py={3}>or</Text>
                     </Flex>
-                  ) : (
-                    <Button py={2} sx={{width: '100%'}} bg={colors[provider.name]} onClick={() => signIn(provider.id)}>
-                      <Flex sx={{justifyContent: 'center', alignItems: 'center', gap: 2}}>
-                        {icons[provider.name]}
-                        Sign in with {provider.name}
-                      </Flex>
-                    </Button>
                   )}
                 </Box>
               ))}

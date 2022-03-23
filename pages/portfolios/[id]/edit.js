@@ -2,8 +2,9 @@
 
 import Head from 'next/head'
 import Image from 'next/image'
-import {useState} from 'react'
+import {useState, useCallback, useRef} from 'react'
 import {useSession, getSession} from 'next-auth/react'
+import {useDropzone} from 'react-dropzone'
 import {toast}                  from 'react-toastify'
 import {
   Button,
@@ -15,17 +16,18 @@ import {
   Heading,
   Card,
   Themed,
-  Label
+  Label,
+  Input
 } from 'theme-ui'
 import {
   PlusIcon,
   FontRomanIcon,
   ExternalLinkIcon
 } from '@radix-ui/react-icons'
-import {useRef}    from 'react'
 import Link        from 'next/link'
 import Navigation  from '../../../components/Navigation'
 import sampleImage from '../../../public/images/sample.jpg'
+import randomGradient    from '../../../components/Gradient'
 import * as Switch from '@radix-ui/react-switch'
 
 export default function EditPortfolio({portfolio}) {
@@ -33,6 +35,23 @@ export default function EditPortfolio({portfolio}) {
   const subheadlineRef = useRef()
   const [portfolioItems, setPortfolioItems] = useState(portfolio.portfolioItems)
   const [published, setPublished] = useState(portfolio.published)
+  const [thumbnail, setThumbnail] = useState()
+
+  const onDrop = useCallback((acceptedFiles) => {
+    acceptedFiles.forEach((file) => {
+      const reader = new FileReader()
+
+      reader.onabort = () => console.log('file reading was aborted')
+      reader.onerror = () => console.log('file reading has failed')
+      reader.onload = () => {
+        setThumbnail(reader.result)
+      }
+      reader.readAsDataURL(file)
+    })
+
+  }, [])
+  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+
   const { data: session } = useSession()
 
   async function updatePublished(checked) {
@@ -90,20 +109,38 @@ export default function EditPortfolio({portfolio}) {
             alignItems: 'start',
             gap: 4
           }}>
-          <Button
-            sx={{
-              width: 100,
-              height: 100,
-              borderRadius: 9999,
-              bg: 'transparent',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'primary',
-              border: theme => `1px dashed ${theme.colors.primary}`
-            }}>
-            <PlusIcon />
-          </Button>
+
+          {!thumbnail ? (
+            <Box
+              {...getRootProps()}
+              sx={{
+                width: 100,
+                height: 100,
+                borderRadius: 9999,
+                bg: 'transparent',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'primary',
+                cursor: 'pointer',
+                border: theme => `1px dashed ${theme.colors.primary}`
+              }}>
+              <Input {...getInputProps()} />
+              <PlusIcon />
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                width: 100,
+                height: 100,
+                borderRadius: 9999,
+                position: 'relative',
+                overflow: 'hidden'
+              }}>
+              <Image src={thumbnail} objectPosition='center' objectFit='cover' layout='fill' />
+            </Box>
+          )}
+
           <Box
             pb={4}>
             <Heading
@@ -219,9 +256,10 @@ export default function EditPortfolio({portfolio}) {
                         height: 200,
                         width: '100%'
                       }}>
-                      {(item.thumbnail && !item.url.includes('figma.com')) ? (
+                      {item.thumbnail &&
                         <Image objectFit='cover' objectPosition='top' layout='fill' src={item.thumbnail} />
-                      ) : (
+                      }
+                      {!item.thumbnail && item.url.includes('figma.com') &&
                         <iframe
                           height={250}
                           width='100%'
@@ -232,7 +270,15 @@ export default function EditPortfolio({portfolio}) {
                           src={`https://www.figma.com/embed?embed_host=foliolio&url=${item.url}`}
                           allowFullScreen
                         />
-                      )}
+                      }
+                      {!item.thumbnail && !item.url.includes('figma.com') &&
+                        <Box
+                          sx={{
+                            height: 200,
+                            background: randomGradient()
+                          }}>
+                        </Box>
+                      }
                     </Box>
                     <Box p={3}>
                       <Heading variant='cardTitle'>{item.title}</Heading>

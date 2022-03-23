@@ -13,10 +13,12 @@ export default {
   },
   text: {
     default: {
+      color: 'text',
       fontFamily: 'body',
       lineHeight: 'body'
     },
     heading: {
+      color: 'text',
       fontFamily: 'heading',
       fontWeight: 500
     },

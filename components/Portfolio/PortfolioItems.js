@@ -6,8 +6,9 @@ import {
   Heading,
   Text
 } from 'theme-ui'
+import randomGradient from '../Gradient'
 
-export default function PortfolioItems({items}) {
+export default function PortfolioItems({items, bg}) {
   return (
     <Grid
       columns={[1, null, 2]}
@@ -25,9 +26,10 @@ export default function PortfolioItems({items}) {
                     height: 200,
                     width: '100%'
                   }}>
-                  {(item.thumbnail && !item.url.includes('figma.com')) ? (
+                  {item.thumbnail &&
                     <Image objectFit='cover' objectPosition='top' layout='fill' src={item.thumbnail} />
-                  ) : (
+                  }
+                  {!item.thumbnail && item.url.includes('figma.com') && (
                     <iframe
                       height={250}
                       width='100%'
@@ -39,6 +41,15 @@ export default function PortfolioItems({items}) {
                       allowFullScreen
                     />
                   )}
+                  {!item.thumbnail && !item.url.includes('figma.com') &&
+                    <Box
+                      sx={{
+                        height: 250,
+                        width: '100%',
+                        background: randomGradient()
+                      }}>
+                    </Box>
+                  }
                 </Box>
                 <Box p={3}>
                   <Heading variant='cardTitle'>{item.title}</Heading>
@@ -51,4 +62,12 @@ export default function PortfolioItems({items}) {
       }
     </Grid>
   )
+}
+
+export function getInitialProps(ctx) {
+  return {
+    props: {
+      bg: rv.linear_random()
+    }
+  }
 }

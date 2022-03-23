@@ -8,47 +8,71 @@ import {
   Box,
   Heading,
   Flex,
-  Text
+  Text,
+  ThemeProvider
 } from 'theme-ui'
 
 export default function PortfolioPage({portfolio}) {
   const {data: session} = useSession()
-  return (
-    <>
-      <Head>
-        <title>Customize your portfolio | Foliolio</title>
-        <meta name="description" content="quick portfolio" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      {session &&
-        <Navigation portfolio session={session}/>
+  /*const theme = {
+    colors: {
+      background: '#000',
+      text: '#fff'
+    },
+    cards: {
+      primary: {
+        bg: 'primary',
+        color: 'white'
       }
+    }
+  }*/
+  const theme = {
+    colors: {
+      background: ''
+    }
+  }
 
-      <Container
-        py={4}
-        as='main'>
-        <Box
-          pb={4}>
-          <Heading
-            as='h1'
-            color='text'
-            pb={2}>
-            {portfolio.headline}
-          </Heading>
+  return (
+    <ThemeProvider theme={theme}>
+      <Box
+        sx={{
+          minHeight: '100vh'
+        }}
+        bg='background'>
+        <Head>
+          <title>Customize your portfolio | Foliolio</title>
+          <meta name="description" content="quick portfolio" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+
+        {session &&
+          <Navigation portfolio session={session}/>
+        }
+
+        <Container
+          py={4}
+          as='main'>
           <Box
-            sx={{
-              maxWidth: '65ch'
-            }}>
-            <Text>
-              {portfolio.subheadline}
-            </Text>
+            pb={4}>
+            <Heading
+              as='h1'
+              pb={2}>
+              {portfolio.headline}
+            </Heading>
+            <Box
+              sx={{
+                maxWidth: '65ch'
+              }}>
+              <Text>
+                {portfolio.subheadline}
+              </Text>
+            </Box>
           </Box>
-        </Box>
 
-        <PortfolioItems items={portfolio.portfolioItems} />
-      </Container>
-    </>
+          <PortfolioItems items={portfolio.portfolioItems} />
+        </Container>
+      </Box>
+    </ThemeProvider>
   )
 }
 

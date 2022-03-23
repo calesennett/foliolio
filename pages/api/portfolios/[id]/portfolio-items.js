@@ -21,13 +21,15 @@ export default async function handler(req, res) {
 
   let thumbnailURL
   if (!url.includes('figma.com')) {
-    await cloudinary.v2.uploader.upload(thumbnail, {}, function(err, res) {
-      if (!err) {
-        thumbnailURL = res.secure_url
-      } else {
-        console.log(err)
-      }
-    })
+    if (thumbnail) {
+      await cloudinary.v2.uploader.upload(thumbnail, {}, function(err, res) {
+        if (!err) {
+          thumbnailURL = res.secure_url
+        } else {
+          console.log(err)
+        }
+      })
+    }
   }
 
   switch (method) {

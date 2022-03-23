@@ -8,16 +8,16 @@ import prisma          from '../../../lib/prisma'
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
-    EmailProvider({
-      id: 'email',
-      server: process.env.EMAIL_SERVER,
-      from:   process.env.EMAIL_FROM
-    }),
     TwitterProvider({
       id: 'twitter',
       name: 'Twitter',
       clientId: process.env.TWITTER_ID,
       clientSecret: process.env.TWITTER_SECRET,
+    }),
+    EmailProvider({
+      id: 'email',
+      server: process.env.EMAIL_SERVER,
+      from:   process.env.EMAIL_FROM
     })
   ],
   pages: {
