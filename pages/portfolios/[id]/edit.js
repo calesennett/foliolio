@@ -6,6 +6,7 @@ import {useState, useCallback, useRef} from 'react'
 import {useSession, getSession} from 'next-auth/react'
 import {useDropzone} from 'react-dropzone'
 import {toast}                  from 'react-toastify'
+import prisma from '../../../lib/prisma'
 import {
   Button,
   Container,
