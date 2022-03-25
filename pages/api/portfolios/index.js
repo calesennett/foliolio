@@ -42,6 +42,7 @@ export default async function handler(req, res) {
 
         res.json(createPortfolio)
       }
+      break
     default:
       res.status(405).end(`Method ${method} not allowed`)
   }
