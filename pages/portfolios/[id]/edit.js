@@ -56,6 +56,7 @@ export default function EditPortfolio({portfolio}) {
   const { data: session } = useSession()
 
   async function updatePublished(checked) {
+    setPublished(checked)
     fetch(`/api/portfolios/${portfolio.id}`, {
       method: 'PATCH',
       headers: {
@@ -72,6 +73,7 @@ export default function EditPortfolio({portfolio}) {
         toast.success("Successfully made portfolio private.")
       }
     }).catch(err => {
+      setPublished(!checked)
       toast("Failed to update portfolio. Please try again")
     })
   }
