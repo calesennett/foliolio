@@ -154,7 +154,7 @@ export default function NewPortfolioItem({portfolio}) {
                   borderRadius: 6
                 }}
                 src={`https://www.figma.com/embed?embed_host=foliolio&url=${url}`}
-                allowfullscreen
+                allowFullScreen
               />
             }
 
