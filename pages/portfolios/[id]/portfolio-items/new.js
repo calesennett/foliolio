@@ -176,7 +176,8 @@ export default function NewPortfolioItem({portfolio}) {
                       mr: 1,
                       mt: 1,
                       bg: 'primary',
-                      borderRadius: 6
+                      borderRadius: 6,
+                      zIndex: 1
                     }}>
                     <Button
                       sx={{

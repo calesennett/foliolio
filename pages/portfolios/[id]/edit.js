@@ -23,7 +23,8 @@ import {
 import {
   PlusIcon,
   FontRomanIcon,
-  ExternalLinkIcon
+  ExternalLinkIcon,
+  Cross2Icon
 } from '@radix-ui/react-icons'
 import Link        from 'next/link'
 import Navigation  from '../../../components/Navigation'
@@ -54,6 +55,20 @@ export default function EditPortfolio({portfolio}) {
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 
   const { data: session } = useSession()
+
+  async function deletePortfolioItem(id) {
+    fetch(`/api/portfolios/${portfolio.id}/portfolio-items/${id}`, {
+      method: 'DELETE'
+    }).then(res => {
+      console.log(res)
+      const newPortfolioItems = portfolioItems.filter(i => {return i.id != id})
+      setPortfolioItems(newPortfolioItems)
+      toast.success('Successfully deleted project.')
+    }).catch(err => {
+      console.log(err)
+      toast.error(err)
+    })
+  }
 
   async function updatePublished(checked) {
     setPublished(checked)
@@ -250,7 +265,8 @@ export default function EditPortfolio({portfolio}) {
             <>
               {portfolioItems.map((item, idx) => {
                 return (
-                  <Card key={item.id} as='a' href={item.url}>
+                  <Card
+                    key={item.id}>
                     <Box
                       sx={{
                         borderRadius: '6px 6px 0 0',
@@ -260,7 +276,26 @@ export default function EditPortfolio({portfolio}) {
                         width: '100%'
                       }}>
                       {item.thumbnail &&
-                        <Image objectFit='cover' objectPosition='top' layout='fill' src={item.thumbnail} />
+                        <>
+                          <Button
+                            sx={{
+                              position: 'absolute',
+                              top: 0,
+                              right: 0,
+                              mr: 1,
+                              mt: 1,
+                              bg: 'primary',
+                              borderRadius: 6,
+                              p: 2,
+                              zIndex: 1
+                            }}
+                            onClick={() => deletePortfolioItem(item.id)}>
+                            <Flex sx={{alignItems: 'center'}}><Cross2Icon /></Flex>
+                          </Button>
+                          <a href={item.url}>
+                            <Image objectFit='cover' objectPosition='top' layout='fill' src={item.thumbnail} />
+                          </a>
+                        </>
                       }
                       {!item.thumbnail && item.url.includes('figma.com') &&
                         <iframe
@@ -275,18 +310,40 @@ export default function EditPortfolio({portfolio}) {
                         />
                       }
                       {!item.thumbnail && !item.url.includes('figma.com') &&
-                        <Box
-                          sx={{
-                            height: 200,
-                            background: randomGradient()
-                          }}>
-                        </Box>
+                        <>
+                          <Button
+                            sx={{
+                              position: 'absolute',
+                              top: 0,
+                              right: 0,
+                              mr: 1,
+                              mt: 1,
+                              bg: 'primary',
+                              borderRadius: 6,
+                              p: 2,
+                              zIndex: 1
+                            }}
+                            onClick={() => deletePortfolioItem(item.id)}>
+                            <Flex sx={{alignItems: 'center'}}><Cross2Icon /></Flex>
+                          </Button>
+                          <a href={item.url}>
+                            <Box
+                              sx={{
+                                height: 200,
+                                background: randomGradient()
+                              }}>
+                            </Box>
+                          </a>
+                        </>
                       }
                     </Box>
-                    <Box p={3}>
-                      <Heading variant='cardTitle'>{item.title}</Heading>
-                      <Text sx={{fontSize: 1}}>{item.description}</Text>
-                    </Box>
+                    <a href={item.url}>
+                      <Box
+                        p={3}>
+                        <Heading variant='cardTitle'>{item.title}</Heading>
+                        <Text sx={{fontSize: 1}}>{item.description}</Text>
+                      </Box>
+                    </a>
                   </Card>
                 )
               })}

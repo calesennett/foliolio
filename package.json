@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next dev & npx prisma studio",
+    "start": "next dev & pscale connect foliolio dev --port 3309 & npx prisma studio",
     "lint": "next lint",
     "postinstall": "npx prisma db push"
   },
