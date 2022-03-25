@@ -94,7 +94,7 @@ export default function Home({portfolios}) {
                                   <Heading variant='cardTitle'>{portfolio.headline}</Heading>
                                   <Text>{portfolio.subheadline}</Text>
                                 </Box>
-                                <Flex sx={{gap: 2, justifySelf: [null, null, 'end']}}>
+                                <Flex sx={{gap: 2, justifySelf: 'end'}}>
                                   <Link href={`/portfolios/${portfolio.id}/edit`}>
                                     <a>
                                       <Button>
