@@ -1,6 +1,7 @@
 import {useSession, getSession} from 'next-auth/react'
 import Head from 'next/head'
 import Navigation from '../../components/Navigation'
+import Image from 'next/image'
 import PortfolioItems from '../../components/Portfolio/PortfolioItems'
 import prisma         from '../../lib/prisma'
 import {
@@ -40,7 +41,7 @@ export default function PortfolioPage({portfolio}) {
         }}
         bg='background'>
         <Head>
-          <title>Customize your portfolio | Foliolio</title>
+          <title>{portfolio.headline} | Foliolio</title>
           <meta name="description" content="quick portfolio" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
@@ -52,22 +53,42 @@ export default function PortfolioPage({portfolio}) {
         <Container
           py={4}
           as='main'>
-          <Box
-            pb={4}>
-            <Heading
-              as='h1'
-              pb={2}>
-              {portfolio.headline}
-            </Heading>
+          <Flex
+            sx={{
+              alignItems: 'start',
+              gap: 4,
+              pb: 4
+            }}>
+            {portfolio.thumbnail &&
+              <Box
+                sx={{
+                  width: 100,
+                  height: 100,
+                  borderRadius: 9999,
+                  position: 'relative',
+                  overflow: 'hidden',
+                  boxShadow: 'default'
+                }}>
+                <Image src={portfolio.thumbnail} objectPosition='center' objectFit='contain' layout='fill' />
+              </Box>
+            }
             <Box
-              sx={{
-                maxWidth: '65ch'
-              }}>
-              <Text>
-                {portfolio.subheadline}
-              </Text>
+              pb={4}>
+              <Heading
+                as='h1'
+                pb={2}>
+                {portfolio.headline}
+              </Heading>
+              <Box
+                sx={{
+                  maxWidth: '65ch'
+                }}>
+                <Text>
+                  {portfolio.subheadline}
+                </Text>
+              </Box>
             </Box>
-          </Box>
+          </Flex>
 
           <PortfolioItems items={portfolio.portfolioItems} />
         </Container>

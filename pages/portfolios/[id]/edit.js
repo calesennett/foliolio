@@ -37,7 +37,7 @@ export default function EditPortfolio({portfolio}) {
   const subheadlineRef = useRef()
   const [portfolioItems, setPortfolioItems] = useState(portfolio.portfolioItems)
   const [published, setPublished] = useState(portfolio.published)
-  const [thumbnail, setThumbnail] = useState()
+  const [thumbnail, setThumbnail] = useState(portfolio.thumbnail)
 
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file) => {
@@ -47,6 +47,23 @@ export default function EditPortfolio({portfolio}) {
       reader.onerror = () => console.log('file reading has failed')
       reader.onload = () => {
         setThumbnail(reader.result)
+
+        fetch(`/api/portfolios/${portfolio.id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            thumbnail: reader.result
+          })
+        }).then(res => {
+          if (res.ok) {
+            toast.success('Updated portfolio thumbnail')
+          } else {
+            setThumbnail()
+            toast.error('Failed to update thumbnail')
+          }
+        })
       }
       reader.readAsDataURL(file)
     })
@@ -57,16 +74,23 @@ export default function EditPortfolio({portfolio}) {
   const { data: session } = useSession()
 
   async function deletePortfolioItem(id) {
+    const oldPortfolioItems = portfolioItems
+
+    const newPortfolioItems = portfolioItems.filter(i => {return i.id != id})
+    setPortfolioItems(newPortfolioItems)
+
     fetch(`/api/portfolios/${portfolio.id}/portfolio-items/${id}`, {
       method: 'DELETE'
     }).then(res => {
-      console.log(res)
-      const newPortfolioItems = portfolioItems.filter(i => {return i.id != id})
-      setPortfolioItems(newPortfolioItems)
-      toast.success('Successfully deleted project.')
+      if (res.ok) {
+        toast.success('Successfully deleted project.')
+      } else {
+        setPortfolioItems(oldPortfolioItems)
+        toast.error('Failed to delete project.')
+      }
     }).catch(err => {
-      console.log(err)
-      toast.error(err)
+      setPortfolioItems(oldPortfolioItems)
+      toast.error('Something went wrong.')
     })
   }
 
@@ -141,7 +165,8 @@ export default function EditPortfolio({portfolio}) {
                 justifyContent: 'center',
                 color: 'primary',
                 cursor: 'pointer',
-                border: theme => `1px dashed ${theme.colors.primary}`
+                boxShadow: 'default',
+                border: theme => `1px dashed ${theme.colors.gray}`
               }}>
               <Input {...getInputProps()} />
               <PlusIcon />
@@ -153,9 +178,10 @@ export default function EditPortfolio({portfolio}) {
                 height: 100,
                 borderRadius: 9999,
                 position: 'relative',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                boxShadow: 'default'
               }}>
-              <Image src={thumbnail} objectPosition='center' objectFit='cover' layout='fill' />
+              <Image src={thumbnail} objectPosition='center' objectFit='contain' layout='fill' />
             </Box>
           )}
 

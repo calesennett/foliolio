@@ -31,7 +31,7 @@ export default {
     cardTitle: {
       variant: 'text.headline',
       pb: 1,
-      fontSize: 2
+      fontSize: 3
     }
   },
   lineHeights: {
