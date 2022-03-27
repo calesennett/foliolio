@@ -64,20 +64,38 @@ export default function Home({portfolios}) {
                 }}
                 as='main'>
                 <Box>
-                  <Flex
-                    pb={2}
+                  <Grid
+                    columns={[1, 2, 2]}
+                    gap={1}
+                    pb={4}
                     sx={{
-                      justifyContent: 'space-between',
                       alignItems: 'center'
                     }}>
                     <Heading pb={3} variant='headline'>Your portfolios</Heading>
-                    <Link
-                      href='/portfolios/new'>
-                      <a><Button>Create portfolio</Button></a>
-                    </Link>
-                  </Flex>
+                    <Box
+                      sx={{
+                        justifySelf: 'end',
+                        width: ['100%', 'auto', 'auto']
+                      }}>
+                      <Link
+                        href='/portfolios/new'>
+                        <Button
+                          sx={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            width: '100%',
+                            gap: 2,
+                            justifyContent: 'center'
+                          }}
+                          py={[2, null, 2]}>
+                          <PlusIcon />
+                          Create portfolio
+                        </Button>
+                      </Link>
+                    </Box>
+                  </Grid>
 
-                  <Heading variant='cardTitle'>Published</Heading>
+                  <Heading pb={2}>Published</Heading>
                   {publishedPortfolios.length > 0 ? (
                       <Grid
                         gap={2}>
@@ -121,7 +139,7 @@ export default function Home({portfolios}) {
                     )
                   }
 
-                  <Heading pt={4} variant='cardTitle'>Drafts</Heading>
+                  <Heading pt={4} pb={2}>Drafts</Heading>
                   {draftPortfolios.length > 0 ? (
                     <Grid
                       gap={2}>

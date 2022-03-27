@@ -69,7 +69,7 @@ export default function PortfolioPage({portfolio}) {
                   overflow: 'hidden',
                   boxShadow: 'default'
                 }}>
-                <Image src={portfolio.thumbnail} objectPosition='center' objectFit='contain' layout='fill' />
+                <Image src={portfolio.thumbnail} objectPosition='center' objectFit='cover' layout='fill' />
               </Box>
             }
             <Box

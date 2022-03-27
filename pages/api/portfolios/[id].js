@@ -50,7 +50,8 @@ export default async function handler(req, res) {
                   headline: headline,
                   subheadline: subheadline,
                   published: published,
-                  ...(thumbnailURL) && {thumbnail: thumbnailURL}
+                  ...(thumbnailURL) && {thumbnail: thumbnailURL},
+                  ...(thumbnail == null) && {thumbnail: null}
                 }
               }
             }

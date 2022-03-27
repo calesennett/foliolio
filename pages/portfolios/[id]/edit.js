@@ -73,6 +73,28 @@ export default function EditPortfolio({portfolio}) {
 
   const { data: session } = useSession()
 
+  async function deleteThumbnail() {
+    const oldThumbnail = thumbnail
+
+    setThumbnail()
+    fetch(`/api/portfolios/${portfolio.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        thumbnail: null
+      })
+    }).then(res => {
+      if (res.ok) {
+        toast.success('Updated portfolio thumbnail')
+      } else {
+        setThumbnail(oldThumbnail)
+        toast.error('Failed to update portfolio thumbnail')
+      }
+    })
+  }
+
   async function deletePortfolioItem(id) {
     const oldPortfolioItems = portfolioItems
 
@@ -125,10 +147,15 @@ export default function EditPortfolio({portfolio}) {
       },
       body: JSON.stringify({
         headline: headlineRef.current.textContent,
-        subheadline: subheadlineRef.current.textContent
+        subheadline: subheadlineRef.current.textContent,
+        thumbnail: thumbnail
       })
     }).then(res => {
-      toast.success("Successfully updated portfolio.")
+      if (res.ok) {
+        toast.success("Successfully updated portfolio.")
+      } else {
+        toast.error("Failed to update portfolio. Please try again")
+      }
     }).catch(err => {
       toast("Failed to update portfolio. Please try again")
     })
@@ -172,8 +199,10 @@ export default function EditPortfolio({portfolio}) {
               <PlusIcon />
             </Box>
           ) : (
-            <Box
+            <Flex
               sx={{
+                justifyContent: 'center',
+                alignItems: 'center',
                 width: 100,
                 height: 100,
                 borderRadius: 9999,
@@ -181,8 +210,18 @@ export default function EditPortfolio({portfolio}) {
                 overflow: 'hidden',
                 boxShadow: 'default'
               }}>
-              <Image src={thumbnail} objectPosition='center' objectFit='contain' layout='fill' />
-            </Box>
+              <Button
+                sx={{
+                  bg: 'primary',
+                  borderRadius: 6,
+                  p: 2,
+                  zIndex: 1
+                }}
+                onClick={() => deleteThumbnail()}>
+                <Flex sx={{alignItems: 'center'}}><Cross2Icon /></Flex>
+              </Button>
+              <Image src={thumbnail} objectPosition='center' objectFit='cover' layout='fill' />
+            </Flex>
           )}
 
           <Box

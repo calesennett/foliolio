@@ -22,6 +22,16 @@ export default {
       fontFamily: 'heading',
       fontWeight: 500
     },
+    caps: {
+      variant: 'text.heading',
+      textTransform: 'uppercase',
+      letterSpacing: '0.05em'
+    },
+    smallcaps: {
+      variant: 'text.caps',
+      fontSize: 1,
+      pb: 2
+    },
     headline: {
       variant: 'text.heading',
       lineHeight: 'heading',
@@ -31,7 +41,7 @@ export default {
     cardTitle: {
       variant: 'text.headline',
       pb: 1,
-      fontSize: 3
+      fontSize: 2
     }
   },
   lineHeights: {
