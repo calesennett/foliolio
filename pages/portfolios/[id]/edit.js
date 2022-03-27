@@ -24,7 +24,8 @@ import {
   PlusIcon,
   FontRomanIcon,
   ExternalLinkIcon,
-  Cross2Icon
+  Cross2Icon,
+  Pencil2Icon
 } from '@radix-ui/react-icons'
 import Link        from 'next/link'
 import Navigation  from '../../../components/Navigation'
@@ -356,22 +357,35 @@ export default function EditPortfolio({portfolio}) {
                       }}>
                       {item.thumbnail &&
                         <>
-                          <Button
+                          <Flex
                             sx={{
+                              gap: 1,
                               position: 'absolute',
                               top: 0,
                               right: 0,
                               mr: 1,
                               mt: 1,
-                              bg: 'primary',
-                              borderRadius: 6,
-                              p: 2,
                               zIndex: 1
-                            }}
-                            onClick={() => deletePortfolioItem(item.id)}>
-                            <Flex sx={{alignItems: 'center'}}><Cross2Icon /></Flex>
-                          </Button>
-                          <a href={item.url}>
+                            }}>
+                            <Link
+                              href={`/portfolios/${portfolio.id}/portfolio-items/${item.id}/edit`}>
+                              <Button
+                                sx={{
+                                  p: 2
+                                }}>
+                                <Flex sx={{alignItems: 'center'}}><Pencil2Icon /></Flex>
+                              </Button>
+                            </Link>
+                            <Button
+                              sx={{
+                                p: 2
+                              }}
+                              onclick={() => deleteportfolioitem(item.id)}>
+                              <Flex sx={{alignItems: 'center'}}><Cross2Icon /></Flex>
+                            </Button>
+                          </Flex>
+                          <a
+                            href={item.url}>
                             <Image objectFit='cover' objectPosition='top' layout='fill' src={item.thumbnail} />
                           </a>
                         </>
@@ -390,21 +404,33 @@ export default function EditPortfolio({portfolio}) {
                       }
                       {!item.thumbnail && !item.url.includes('figma.com') &&
                         <>
-                          <Button
+                          <Flex
                             sx={{
+                              gap: 1,
                               position: 'absolute',
                               top: 0,
                               right: 0,
                               mr: 1,
                               mt: 1,
-                              bg: 'primary',
-                              borderRadius: 6,
-                              p: 2,
                               zIndex: 1
-                            }}
-                            onClick={() => deletePortfolioItem(item.id)}>
-                            <Flex sx={{alignItems: 'center'}}><Cross2Icon /></Flex>
-                          </Button>
+                            }}>
+                            <Link
+                              href={`/portfolios/${portfolio.id}/portfolio-items/${item.id}/edit`}>
+                              <Button
+                                sx={{
+                                  p: 2
+                                }}>
+                                <Flex sx={{alignItems: 'center'}}><Pencil2Icon /></Flex>
+                              </Button>
+                            </Link>
+                            <Button
+                              sx={{
+                                p: 2
+                              }}
+                              onclick={() => deleteportfolioitem(item.id)}>
+                              <Flex sx={{alignItems: 'center'}}><Cross2Icon /></Flex>
+                            </Button>
+                          </Flex>
                           <a href={item.url}>
                             <Box
                               sx={{
