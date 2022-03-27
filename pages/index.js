@@ -20,6 +20,7 @@ import {
   PlusIcon,
   FontRomanIcon,
   Pencil1Icon,
+  Share2Icon,
   TrashIcon
 } from '@radix-ui/react-icons'
 import {useRef}   from 'react'
@@ -42,6 +43,22 @@ export default function Home({portfolios}) {
       toast.success('Successfully deleted portfolio.')
     } catch (err) {
       toast.error('Failed to delete portfolio. Please try again.')
+    }
+  }
+
+  async function sharePortfolio(url, title) {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          url,
+          title: 'Foliolio',
+          text: 'Check out my Foliolio!'
+        }).then(() => {
+          toast.success('Successfully shared portfolio')
+        })
+      } catch (err) {
+        toast.error('Something went wrong')
+      }
     }
   }
 
@@ -113,6 +130,10 @@ export default function Home({portfolios}) {
                                   <Text>{portfolio.subheadline}</Text>
                                 </Box>
                                 <Flex sx={{gap: 2, justifySelf: 'end'}}>
+                                  <Button
+                                    onClick={() => sharePortfolio(`${process.env.NEXT_PUBLIC_HOSTNAME}/portfolios/${portfolio.id}`, portfolio.headline)}>
+                                    <Flex sx={{gap: 2, alignItems: 'center'}}><Share2Icon />Share</Flex>
+                                  </Button>
                                   <Link href={`/portfolios/${portfolio.id}/edit`}>
                                     <a>
                                       <Button>
@@ -135,7 +156,7 @@ export default function Home({portfolios}) {
                         })}
                       </Grid>
                     ) : (
-                      <Text sx={{fontSize: 1}}>No published portfolios.</Text>
+                      <Text>No published portfolios.</Text>
                     )
                   }
 
@@ -182,7 +203,7 @@ export default function Home({portfolios}) {
                       })}
                     </Grid>
                   ) : (
-                    <Text sx={{fontSize: 1}}>No draft portfolios.</Text>
+                    <Text>No draft portfolios.</Text>
                   )}
                 </Box>
               </Container>
