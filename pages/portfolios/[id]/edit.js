@@ -173,112 +173,126 @@ export default function EditPortfolio({portfolio}) {
       <Container
         pb={4}
         as='main'>
-        <Flex
+        <Grid
+          pb={2}
+          sx={{
+            justifyContent: 'end'
+          }}>
+          <Box>
+            <Link
+              href={`/portfolios/${portfolio.id}`}>
+              <Button>
+                <Flex
+                  sx={{
+                    gap: 2,
+                    alignItems: 'center'
+                  }}>
+                  <ExternalLinkIcon />
+                  {published ? 'View live site' : 'Preview'}
+                </Flex>
+              </Button>
+            </Link>
+          </Box>
+        </Grid>
+        <Grid
+          columns={[1, '3fr 1fr']}
+          gap={4}
           sx={{
             alignItems: 'start',
-            gap: 4
           }}>
 
-          {!thumbnail ? (
-            <Box
-              {...getRootProps()}
-              sx={{
-                width: 100,
-                height: 100,
-                borderRadius: 9999,
-                bg: 'transparent',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'primary',
-                cursor: 'pointer',
-                boxShadow: 'default',
-                border: theme => `1px dashed ${theme.colors.gray}`
-              }}>
-              <Input {...getInputProps()} />
-              <PlusIcon />
-            </Box>
-          ) : (
-            <Flex
-              sx={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: 100,
-                height: 100,
-                borderRadius: 9999,
-                position: 'relative',
-                overflow: 'hidden',
-                boxShadow: 'default'
-              }}>
-              <Button
-                sx={{
-                  bg: 'primary',
-                  borderRadius: 6,
-                  p: 2,
-                  zIndex: 1
-                }}
-                onClick={() => deleteThumbnail()}>
-                <Flex sx={{alignItems: 'center'}}><Cross2Icon /></Flex>
-              </Button>
-              <Image src={thumbnail} objectPosition='center' objectFit='cover' layout='fill' />
-            </Flex>
-          )}
-
-          <Box
-            pb={4}>
-            <Heading
-              as='h1'
-              color='text'
-              pb={2}>
-              <Flex
-                ref={headlineRef}
-                onBlur={() => updatePortfolio()}
-                contentEditable={true}
-                suppressContentEditableWarning={true}
-                sx={{
-                  alignItems: 'center',
-                  gap: 2
-                }}>
-                <FontRomanIcon />
-                {portfolio.headline}
-              </Flex>
-            </Heading>
-            <Box
-              sx={{
-                maxWidth: '65ch'
-              }}>
-              <Flex
-                ref={subheadlineRef}
-                onBlur={() => updatePortfolio()}
-                suppressContentEditableWarning={true}
-                contentEditable={true}
-                sx={{
-                  alignItems: 'center',
-                  gap: 2
-                }}>
-                <FontRomanIcon />
-                <Text>{portfolio.subheadline}</Text>
-              </Flex>
-            </Box>
-            <Box pt={4}>
-              <Link
-                href={`/portfolios/${portfolio.id}`}>
-                <Button>
-                  <Flex
-                    sx={{
-                      gap: 2,
-                      alignItems: 'center'
-                    }}>
-                    <ExternalLinkIcon />
-                    {published ? 'View live site' : 'Preview'}
-                  </Flex>
-                </Button>
-              </Link>
-            </Box>
-          </Box>
 
           <Flex
             sx={{
+              alignItems: 'start',
+              gap: 4
+            }}
+            pb={4}>
+            {!thumbnail ? (
+              <Box
+                {...getRootProps()}
+                sx={{
+                  width: 100,
+                  height: 100,
+                  borderRadius: 9999,
+                  bg: 'transparent',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'primary',
+                  cursor: 'pointer',
+                  boxShadow: 'default',
+                  border: theme => `1px dashed ${theme.colors.gray}`
+                }}>
+                <Input {...getInputProps()} />
+                <PlusIcon />
+              </Box>
+            ) : (
+              <Flex
+                sx={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: 100,
+                  height: 100,
+                  borderRadius: 9999,
+                  position: 'relative',
+                  overflow: 'hidden',
+                  boxShadow: 'default'
+                }}>
+                <Button
+                  sx={{
+                    bg: 'primary',
+                    borderRadius: 6,
+                    p: 2,
+                    zIndex: 1
+                  }}
+                  onClick={() => deleteThumbnail()}>
+                  <Flex sx={{alignItems: 'center'}}><Cross2Icon /></Flex>
+                </Button>
+                <Image src={thumbnail} objectPosition='center' objectFit='cover' layout='fill' />
+              </Flex>
+            )}
+            <Box>
+              <Heading
+                as='h1'
+                color='text'
+                pb={2}>
+                <Flex
+                  ref={headlineRef}
+                  onBlur={() => updatePortfolio()}
+                  contentEditable={true}
+                  suppressContentEditableWarning={true}
+                  sx={{
+                    alignItems: 'center',
+                    gap: 2
+                  }}>
+                  <FontRomanIcon />
+                  {portfolio.headline}
+                </Flex>
+              </Heading>
+              <Box
+                sx={{
+                  maxWidth: '65ch'
+                }}>
+                <Flex
+                  ref={subheadlineRef}
+                  onBlur={() => updatePortfolio()}
+                  suppressContentEditableWarning={true}
+                  contentEditable={true}
+                  sx={{
+                    alignItems: 'center',
+                    gap: 2
+                  }}>
+                  <FontRomanIcon />
+                  <Text>{portfolio.subheadline}</Text>
+                </Flex>
+              </Box>
+            </Box>
+          </Flex>
+
+          <Flex
+            sx={{
+              pb: [3, 0],
               alignItems: 'center',
               ml: 'auto',
               gap: 1
@@ -321,7 +335,7 @@ export default function EditPortfolio({portfolio}) {
               />
             </Switch.Root>
           </Flex>
-        </Flex>
+        </Grid>
 
         <Grid
           columns={[1, null, 2]}

@@ -57,7 +57,7 @@ export default function Home({portfolios}) {
           toast.success('Successfully shared portfolio')
         })
       } catch (err) {
-        toast.error('Something went wrong')
+        toast.error('Share cancelled')
       }
     }
   }
