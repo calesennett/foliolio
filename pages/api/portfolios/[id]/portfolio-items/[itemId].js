@@ -23,8 +23,8 @@ export default async function handler(req, res) {
 
   if (!session) return res.status(401).end()
 
-  let thumbnailURL = null
-  if (!url.includes('figma.com')) {
+  let thumbnailURL = thumbnail.includes('cloudinary.com') ? thumbnail : null
+  if (!thumbnailURL && !url.includes('figma.com')) {
     if (thumbnail && !thumbnail.includes('cloudinary.com')) {
       await cloudinary.v2.uploader.upload(thumbnail, {}, function(err, res) {
         if (!err) {
