@@ -238,13 +238,24 @@ export default function EditPortfolio({portfolio}) {
                   borderRadius: 9999,
                   position: 'relative',
                   overflow: 'hidden',
-                  boxShadow: 'default'
+                  boxShadow: 'default',
+                  '&:hover': {
+                    button: {
+                      visibility: 'visible',
+                      opacity: 1
+                    }
+                  }
                 }}>
                 <Button
                   sx={{
-                    bg: 'primary',
-                    borderRadius: 6,
                     p: 2,
+                    bg: 'primary',
+                    transition: 'all 0.15s ease-in-out',
+                    '-webkit-transition': 'all 0.15s ease-in-out',
+                    '-moz-transition': 'all 0.15s ease-in-out',
+                    borderRadius: 6,
+                    opacity: 0,
+                    visibility: 'hidden',
                     zIndex: 1
                   }}
                   onClick={() => deleteThumbnail()}>
