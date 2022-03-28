@@ -251,8 +251,6 @@ export default function EditPortfolio({portfolio}) {
                     p: 2,
                     bg: 'primary',
                     transition: 'all 0.15s ease-in-out',
-                    '-webkit-transition': 'all 0.15s ease-in-out',
-                    '-moz-transition': 'all 0.15s ease-in-out',
                     borderRadius: 6,
                     opacity: 0,
                     visibility: 'hidden',
