@@ -389,7 +389,7 @@ export default function EditPortfolio({portfolio}) {
                               sx={{
                                 p: 2
                               }}
-                              onclick={() => deleteportfolioitem(item.id)}>
+                              onClick={() => deleteportfolioitem(item.id)}>
                               <Flex sx={{alignItems: 'center'}}><Cross2Icon /></Flex>
                             </Button>
                           </Flex>

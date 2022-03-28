@@ -10,7 +10,8 @@ import {useState} from 'react'
 import Navigation from '../../components/Navigation'
 import {
   PaperPlaneIcon,
-  TwitterLogoIcon
+  TwitterLogoIcon,
+  DashboardIcon
 } from '@radix-ui/react-icons'
 import {
   Button,
@@ -21,6 +22,7 @@ import {
   Box,
   Text,
   Grid,
+  Divider,
   Heading,
   Card,
   Themed
@@ -53,8 +55,8 @@ export default function SignInPage({providers, csrfToken}) {
             justifyContent: 'center'
           }}>
           <Box
-            mt={3}
-            p={3}
+            mt={4}
+            p={4}
             sx={{
               width: 400,
               maxWidth: '100%',
@@ -63,14 +65,35 @@ export default function SignInPage({providers, csrfToken}) {
             }}
             bg='white'
             as='main'>
-            <Heading
-              pb={4}
-              variant='headline'
+            <Box
               sx={{
                 textAlign: 'center'
-              }}>
-              Sign in
-            </Heading>
+              }}
+              pb={4}>
+              <Flex
+                sx={{
+                  mx: 'auto',
+                  height: 100,
+                  width: 100,
+                  borderRadius: 9999,
+                  backgroundImage: theme => `linear-gradient(to right, ${theme.colors.primary}, #000)`,
+                  color: 'lightgray',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: 'default'
+                }}>
+                <Flex sx={{alignItems: 'center'}}><DashboardIcon width={30} height={30} /></Flex>
+              </Flex>
+              <Heading
+                pt={3}
+                sx={{
+                  fontSize: 4
+                }}
+                variant='headline'>
+                Welcome to Foliolio
+              </Heading>
+              <Text>Log in or sign up with Twitter or your email.</Text>
+            </Box>
             <Grid
               gap={2}>
               {Object.values(providers).map((provider) => (
@@ -84,7 +107,7 @@ export default function SignInPage({providers, csrfToken}) {
                         </Flex>
                       </Button>
 
-                      <Text py={3}>or</Text>
+                      <Divider />
                     </Flex>
                   ) : (
                     <Flex sx={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>

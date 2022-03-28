@@ -124,7 +124,7 @@ export default {
     }
   },
   shadows: {
-    default: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px'
+    default: 'rgba(17, 12, 46, 0.2) 0px 48px 100px 0px'
   },
   sizes: {
     container: 768
@@ -162,6 +162,11 @@ export default {
       fontSize: 5,
       fontWeight: 500,
       fontFamily: 'heading'
+    },
+    hr: {
+      width: '100%',
+      pb: 3,
+      color: 'gray'
     }
   }
 }
