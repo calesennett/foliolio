@@ -30,6 +30,7 @@ import sampleImage from '../public/images/sample.jpg'
 
 export default function Home({portfolios}) {
   const { data: session } = useSession()
+  const [shareEnabled, setShareEnabled] = useState(navigator.share)
   const publishedPortfolios = portfolios.filter(portfolio => portfolio.published)
   const draftPortfolios     = portfolios.filter(portfolio => !portfolio.published)
 
@@ -130,10 +131,12 @@ export default function Home({portfolios}) {
                                   <Text>{portfolio.subheadline}</Text>
                                 </Box>
                                 <Flex sx={{gap: 2, justifySelf: 'end'}}>
-                                  <Button
-                                    onClick={() => sharePortfolio(`${process.env.NEXT_PUBLIC_HOSTNAME}/portfolios/${portfolio.id}`, portfolio.headline)}>
-                                    <Flex sx={{gap: 2, alignItems: 'center'}}><Share2Icon />Share</Flex>
-                                  </Button>
+                                  {shareEnabled &&
+                                    <Button
+                                      onClick={() => sharePortfolio(`${process.env.NEXT_PUBLIC_HOSTNAME}/portfolios/${portfolio.id}`, portfolio.headline)}>
+                                      <Flex sx={{gap: 2, alignItems: 'center'}}><Share2Icon />Share</Flex>
+                                    </Button>
+                                  }
                                   <Link href={`/portfolios/${portfolio.id}/edit`}>
                                     <a>
                                       <Button>
