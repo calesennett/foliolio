@@ -27,7 +27,7 @@ export default function PortfolioItems({items, bg}) {
                     width: '100%'
                   }}>
                   {item.thumbnail &&
-                    <Image objectFit='cover' objectPosition='top' layout='fill' src={item.thumbnail} />
+                    <Image objectFit='cover' objectPosition='top' layout='fill' alt={item.title} src={item.thumbnail} />
                   }
                   {!item.thumbnail && item.url.includes('figma.com') && (
                     <iframe

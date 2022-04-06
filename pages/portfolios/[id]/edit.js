@@ -222,7 +222,6 @@ export default function EditPortfolio({portfolio}) {
                   justifyContent: 'center',
                   color: 'primary',
                   cursor: 'pointer',
-                  boxShadow: 'default',
                   border: theme => `1px dashed ${theme.colors.gray}`
                 }}>
                 <Input {...getInputProps()} />
@@ -238,7 +237,6 @@ export default function EditPortfolio({portfolio}) {
                   borderRadius: 9999,
                   position: 'relative',
                   overflow: 'hidden',
-                  boxShadow: 'default',
                   '&:hover': {
                     button: {
                       visibility: 'visible',
