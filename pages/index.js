@@ -1,7 +1,10 @@
 import Head from 'next/head'
 import Router from 'next/router'
 import Image from 'next/image'
-import {useState} from 'react'
+import {
+  useState,
+  useEffect
+} from 'react'
 import {useSession, getSession} from 'next-auth/react'
 import prisma from '../lib/prisma'
 import {
@@ -30,9 +33,15 @@ import sampleImage from '../public/images/sample.jpg'
 
 export default function Home({portfolios}) {
   const { data: session } = useSession()
-  const [shareEnabled, setShareEnabled] = useState(navigator.share)
+  const [shareEnabled, setShareEnabled] = useState(false)
   const publishedPortfolios = portfolios.filter(portfolio => portfolio.published)
   const draftPortfolios     = portfolios.filter(portfolio => !portfolio.published)
+
+  useEffect(() => {
+    if (navigator.share) {
+      setShareEnabled(true);
+    }
+  }, [])
 
   async function deletePortfolio(id) {
     try {
