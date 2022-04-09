@@ -203,7 +203,8 @@ export default function EditPortfolio({portfolio}) {
           }}>
 
 
-          <Flex
+          <Grid
+            columns={[1, '1fr 3fr', '1fr 4fr']}
             sx={{
               alignItems: 'start',
               gap: 4
@@ -213,6 +214,7 @@ export default function EditPortfolio({portfolio}) {
               <Box
                 {...getRootProps()}
                 sx={{
+                  mx: ['auto', 0],
                   width: 100,
                   height: 100,
                   borderRadius: 9999,
@@ -232,6 +234,7 @@ export default function EditPortfolio({portfolio}) {
                 sx={{
                   justifyContent: 'center',
                   alignItems: 'center',
+                  mx: ['auto', 0],
                   width: 100,
                   height: 100,
                   borderRadius: 9999,
@@ -296,7 +299,7 @@ export default function EditPortfolio({portfolio}) {
                 </Flex>
               </Box>
             </Box>
-          </Flex>
+          </Grid>
 
           <Flex
             sx={{

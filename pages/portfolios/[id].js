@@ -9,6 +9,7 @@ import {
   Box,
   Heading,
   Flex,
+  Grid,
   Text,
   ThemeProvider
 } from 'theme-ui'
@@ -53,7 +54,8 @@ export default function PortfolioPage({portfolio}) {
         <Container
           py={4}
           as='main'>
-          <Flex
+          <Grid
+            columns={[1, '1fr 3fr', '1fr 4fr']}
             sx={{
               alignItems: 'start',
               gap: 4,
@@ -62,17 +64,21 @@ export default function PortfolioPage({portfolio}) {
             {portfolio.thumbnail &&
               <Box
                 sx={{
+                  mx: ['auto', 0],
                   width: 100,
                   height: 100,
                   borderRadius: 9999,
                   position: 'relative',
                   overflow: 'hidden',
-                  boxShadow: 'default'
+                  boxShadow: 'default',
                 }}>
                 <Image src={portfolio.thumbnail} objectPosition='center' alt={`Avatar for ${portfolio.headline}`} objectFit='cover' layout='fill' />
               </Box>
             }
             <Box
+              sx={{
+                textAlign: ['center', 'left']
+              }}
               pb={4}>
               <Heading
                 as='h1'
@@ -88,7 +94,7 @@ export default function PortfolioPage({portfolio}) {
                 </Text>
               </Box>
             </Box>
-          </Flex>
+          </Grid>
 
           <PortfolioItems items={portfolio.portfolioItems} />
         </Container>
