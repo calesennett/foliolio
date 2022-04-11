@@ -2,10 +2,24 @@
 
 import Head from 'next/head'
 import Image from 'next/image'
-import {useState, useCallback, useRef} from 'react'
+import {useState, useEffect, useCallback, useRef} from 'react'
 import {useSession, getSession} from 'next-auth/react'
 import {useDropzone} from 'react-dropzone'
-import {toast}                  from 'react-toastify'
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core'
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates
+} from '@dnd-kit/sortable'
+import PortfolioItem       from '../../../components/PortfolioItem'
+import {toast}             from 'react-toastify'
 import prisma from '../../../lib/prisma'
 import {
   Button,
@@ -39,6 +53,14 @@ export default function EditPortfolio({portfolio}) {
   const [portfolioItems, setPortfolioItems] = useState(portfolio.portfolioItems)
   const [published, setPublished] = useState(portfolio.published)
   const [thumbnail, setThumbnail] = useState(portfolio.thumbnail)
+  const [activeId,  setActiveId]  = useState("")
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
 
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file) => {
@@ -73,6 +95,38 @@ export default function EditPortfolio({portfolio}) {
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 
   const { data: session } = useSession()
+
+	function handleDragEnd(event) {
+    const {active, over} = event
+
+    if (active.id !== over.id) {
+      setPortfolioItems((portfolioItems) => {
+        const oldIndex = portfolioItems.map(item => item.id).indexOf(active.id)
+        const newIndex = portfolioItems.map(item => item.id).indexOf(over.id)
+
+        return arrayMove(portfolioItems, oldIndex, newIndex);
+      })
+    }
+
+    setPortfolioItemOrder()
+  }
+
+  async function setPortfolioItemOrder() {
+    portfolioItems.forEach((item, idx) => {
+      fetch(`/api/portfolios/${portfolio.id}/portfolio-items/${item.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          order: idx,
+          url: item.url
+        })
+      })
+    })
+
+    toast.success('Updated portfolio order')
+  }
 
   async function deleteThumbnail() {
     const oldThumbnail = thumbnail
@@ -116,6 +170,7 @@ export default function EditPortfolio({portfolio}) {
       toast.error('Something went wrong.')
     })
   }
+
 
   async function updatePublished(checked) {
     setPublished(checked)
@@ -352,117 +407,15 @@ export default function EditPortfolio({portfolio}) {
           columns={[1, null, 2]}
           gap={3}>
           {portfolioItems &&
-            <>
-              {portfolioItems.map((item, idx) => {
-                return (
-                  <Card
-                    key={item.id}>
-                    <Box
-                      sx={{
-                        borderRadius: '6px 6px 0 0',
-                        overflow: 'hidden',
-                        position: 'relative',
-                        height: 200,
-                        width: '100%'
-                      }}>
-                      {item.thumbnail &&
-                        <>
-                          <Flex
-                            sx={{
-                              gap: 1,
-                              position: 'absolute',
-                              top: 0,
-                              right: 0,
-                              mr: 1,
-                              mt: 1,
-                              zIndex: 1
-                            }}>
-                            <Link
-                              href={`/portfolios/${portfolio.id}/portfolio-items/${item.id}/edit`}>
-                              <Button
-                                sx={{
-                                  p: 2
-                                }}>
-                                <Flex sx={{alignItems: 'center'}}><Pencil2Icon /></Flex>
-                              </Button>
-                            </Link>
-                            <Button
-                              sx={{
-                                p: 2
-                              }}
-                              onClick={() => deletePortfolioItem(item.id)}>
-                              <Flex sx={{alignItems: 'center'}}><Cross2Icon /></Flex>
-                            </Button>
-                          </Flex>
-                          <a
-                            href={item.url}>
-                            <Image objectFit='cover' objectPosition='top' layout='fill' src={item.thumbnail} />
-                          </a>
-                        </>
-                      }
-                      {!item.thumbnail && item.url.includes('figma.com') &&
-                        <iframe
-                          height={250}
-                          width='100%'
-                          style={{
-                            border: 0,
-                            borderRadius: 6
-                          }}
-                          src={`https://www.figma.com/embed?embed_host=foliolio&url=${item.url}`}
-                          allowFullScreen
-                        />
-                      }
-                      {!item.thumbnail && !item.url.includes('figma.com') &&
-                        <>
-                          <Flex
-                            sx={{
-                              gap: 1,
-                              position: 'absolute',
-                              top: 0,
-                              right: 0,
-                              mr: 1,
-                              mt: 1,
-                              zIndex: 1
-                            }}>
-                            <Link
-                              href={`/portfolios/${portfolio.id}/portfolio-items/${item.id}/edit`}>
-                              <Button
-                                sx={{
-                                  p: 2
-                                }}>
-                                <Flex sx={{alignItems: 'center'}}><Pencil2Icon /></Flex>
-                              </Button>
-                            </Link>
-                            <Button
-                              sx={{
-                                p: 2
-                              }}
-                              onClick={() => deletePortfolioItem(item.id)}>
-                              <Flex sx={{alignItems: 'center'}}><Cross2Icon /></Flex>
-                            </Button>
-                          </Flex>
-                          <a href={item.url}>
-                            <Box
-                              sx={{
-                                height: 200,
-                                background: randomGradient()
-                              }}>
-                            </Box>
-                          </a>
-                        </>
-                      }
-                    </Box>
-                    <a href={item.url}>
-                      <Box
-                        p={3}>
-                        <Heading variant='cardTitle'>{item.title}</Heading>
-                        <Text sx={{fontSize: 1}}>{item.description}</Text>
-                      </Box>
-                    </a>
-                  </Card>
-                )
-              })}
-            </>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}>
+              <SortableContext
+                items={portfolioItems}>
+                {portfolioItems.map(item => <PortfolioItem deletePortfolioItem={deletePortfolioItem} id={item.id} key={item.id} item={item} portfolioId={portfolio.id} />)}
+              </SortableContext>
+            </DndContext>
           }
           <Link
             href={`/portfolios/${portfolio.id}/portfolio-items/new`}>

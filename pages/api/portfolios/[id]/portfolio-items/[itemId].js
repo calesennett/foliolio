@@ -17,6 +17,7 @@ export default async function handler(req, res) {
     title,
     description,
     url,
+    order,
     thumbnail
   } = req.body
   const {method}     = req
@@ -57,6 +58,7 @@ export default async function handler(req, res) {
                       title,
                       description,
                       url,
+                      order,
                       thumbnail: thumbnailURL
                     }
                   }
