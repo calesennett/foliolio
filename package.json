@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next dev",
     "lint": "next lint",
-    "postinstall": "npx prisma db push"
+    "postinstall": "npx prisma db push --accept-data-loss"
   },
   "dependencies": {
     "@dnd-kit/sortable": "^6.0.1",
