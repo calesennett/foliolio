@@ -118,25 +118,26 @@ export default function EditPortfolio({portfolio}) {
   }
 
   async function setPortfolioItemOrder() {
-    portfolioItems.forEach((item, idx) => {
-      fetch(`/api/portfolios/${portfolio.id}/portfolio-items/${item.id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          order: idx,
-          url: item.url,
-          thumbnail: item.thumbnail
+    try {
+      await portfolioItems.forEach((item, idx) => {
+        fetch(`/api/portfolios/${portfolio.id}/portfolio-items/${item.id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            order: idx,
+            url: item.url,
+            thumbnail: item.thumbnail
+          })
         })
-      }).then(res => {
-        if (res.ok) {
-          toast.success('Reordered portfolio items')
-        } else {
-          toast.error('Failed to reorder items')
-        }
       })
-    })
+
+      toast.success('Updated project order')
+    } catch (err) {
+      toast.error('Failed to update project order')
+    }
+
   }
 
   async function deleteThumbnail() {
