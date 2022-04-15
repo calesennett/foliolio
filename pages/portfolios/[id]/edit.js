@@ -129,10 +129,14 @@ export default function EditPortfolio({portfolio}) {
           url: item.url,
           thumbnail: item.thumbnail
         })
+      }).then(res => {
+        if (res.ok) {
+          toast.success('Reordered portfolio items')
+        } else {
+          toast.error('Failed to reorder items')
+        }
       })
     })
-
-    toast.success('Updated portfolio order')
   }
 
   async function deleteThumbnail() {
