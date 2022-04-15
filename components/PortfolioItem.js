@@ -12,8 +12,9 @@ import {
   Pencil2Icon,
   Cross2Icon,
 } from '@radix-ui/react-icons'
-import {useSortable} from '@dnd-kit/sortable'
-import {CSS}         from '@dnd-kit/utilities'
+import {useSortable}  from '@dnd-kit/sortable'
+import generateRandom from './Gradient'
+import {CSS}          from '@dnd-kit/utilities'
 
 export default function PortfolioItem({id, item, portfolioId, deletePortfolioItem}) {
   const {
@@ -123,7 +124,7 @@ export default function PortfolioItem({id, item, portfolioId, deletePortfolioIte
               <Box
                 sx={{
                   height: 200,
-                  background: randomGradient()
+                  background: generateRandom()
                 }}>
               </Box>
             </a>

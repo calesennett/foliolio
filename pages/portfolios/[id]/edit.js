@@ -44,7 +44,6 @@ import {
 import Link        from 'next/link'
 import Navigation  from '../../../components/Navigation'
 import sampleImage from '../../../public/images/sample.jpg'
-import randomGradient    from '../../../components/Gradient'
 import * as Switch from '@radix-ui/react-switch'
 
 export default function EditPortfolio({portfolio}) {
@@ -120,7 +119,8 @@ export default function EditPortfolio({portfolio}) {
         },
         body: JSON.stringify({
           order: idx,
-          url: item.url
+          url: item.url,
+          thumbnail: item.thumbnail
         })
       })
     })
