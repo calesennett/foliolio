@@ -126,7 +126,11 @@ export async function getServerSideProps(ctx) {
       }
     },
     include: {
-      portfolioItems: true
+      portfolioItems: {
+        orderBy: {
+          order: 'asc'
+        }
+      }
     }
   })
 
