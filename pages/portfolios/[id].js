@@ -109,14 +109,14 @@ export async function getServerSideProps(ctx) {
   const portfolio = await prisma.portfolio.findFirst({
     where: {
       id: id,
-      ...(session === null) && {published: true},
       ...(session !== null) && {
         user: {
           is: {
             email: session.user.email
           }
         }
-      }
+      },
+      ...(session === null) && {published: true}
     },
     include: {
       portfolioItems: true
