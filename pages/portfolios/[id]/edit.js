@@ -93,6 +93,15 @@ export default function EditPortfolio({portfolio}) {
   }, [])
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 
+  const firstRender = useRef(true)
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false
+    } else {
+      setPortfolioItemOrder()
+    }
+  }, [portfolioItems])
+
   const { data: session } = useSession()
 
 	function handleDragEnd(event) {
@@ -106,8 +115,6 @@ export default function EditPortfolio({portfolio}) {
         return arrayMove(portfolioItems, oldIndex, newIndex);
       })
     }
-
-    setPortfolioItemOrder()
   }
 
   async function setPortfolioItemOrder() {
@@ -457,8 +464,12 @@ export async function getServerSideProps(ctx) {
         }
       },
       include: {
-        portfolioItems: true
-      }
+        portfolioItems: {
+          orderBy: {
+            order: 'asc'
+          }
+        }
+      },
     })
     return {
       props: {
