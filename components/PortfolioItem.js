@@ -11,6 +11,7 @@ import {
 import {
   Pencil2Icon,
   Cross2Icon,
+  DragHandleDots2Icon
 } from '@radix-ui/react-icons'
 import {useSortable}  from '@dnd-kit/sortable'
 import generateRandom from './Gradient'
@@ -33,9 +34,7 @@ export default function PortfolioItem({id, item, portfolioId, deletePortfolioIte
   return (
     <Card
       sx={style}
-      ref={setNodeRef}
-      {...attributes}
-      {...listeners}>
+      ref={setNodeRef}>
       <Box
         sx={{
           borderRadius: '6px 6px 0 0',
@@ -56,6 +55,14 @@ export default function PortfolioItem({id, item, portfolioId, deletePortfolioIte
                 mt: 1,
                 zIndex: 1
               }}>
+              <Button
+                sx={{
+                  p: 2
+                }}
+                {...attributes}
+                {...listeners}>
+                <Flex sx={{alignItems: 'center'}}><DragHandleDots2Icon /></Flex>
+              </Button>
               <Link
                 href={`/portfolios/${portfolioId}/portfolio-items/${item.id}/edit`}>
                 <Button
@@ -103,6 +110,14 @@ export default function PortfolioItem({id, item, portfolioId, deletePortfolioIte
                 mt: 1,
                 zIndex: 1
               }}>
+              <Button
+                sx={{
+                  p: 2
+                }}
+                {...attributes}
+                {...listeners}>
+                <Flex sx={{alignItems: 'center'}}><DragHandleDots2Icon /></Flex>
+              </Button>
               <Link
                 href={`/portfolios/${portfolioId}/portfolio-items/${item.id}/edit`}>
                 <Button
@@ -131,11 +146,14 @@ export default function PortfolioItem({id, item, portfolioId, deletePortfolioIte
           </>
         }
       </Box>
-      <Box
-        p={3}>
-        <Heading variant='cardTitle'>{item.title}</Heading>
-        <Text sx={{fontSize: 1}}>{item.description}</Text>
-      </Box>
+      <a
+        href={item.url}>
+        <Box
+          p={3}>
+          <Heading variant='cardTitle'>{item.title}</Heading>
+          <Text sx={{fontSize: 1}}>{item.description}</Text>
+        </Box>
+      </a>
     </Card>
   )
 }
